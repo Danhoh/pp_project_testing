@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update user</title>
+    <style>
+        .error {
+            background-color: rgba(255, 0, 0, 0.3);
+            color: black;
+        }
+
+        .form-row {
+            margin: 30px;
+        }
+    </style>
+</head>
+<body>
+<form th:action="@{/add}" th:method="post" th:object="${user}">
+    <div style="visibility: hidden" class="form-row">
+        <label for="id">ID:</label>
+        <input name="id" id="id" type="text" th:field="*{id}">
+    </div>
+    <div class="form-row">
+        <div class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Error</div>
+        <label for="username">username:</label>
+        <input name="username" id="username" type="text" th:field="*{username}">
+    </div>
+    <div class="form-row">
+        <div class="error" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Error</div>
+        <label for="firstName">firstName:</label>
+        <input name="firstName" id="firstName" type="text" th:field="*{firstName}">
+    </div>
+    <div class="form-row">
+        <div class="error" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Error</div>
+        <label for="lastName">lastName:</label>
+        <input name="lastName" id="lastName" type="text" th:field="*{lastName}">
+    </div>
+    <div class="form-row">
+        <label for="role">Role:</label>
+        <select name="role" id="role" th:field="*{role}">
+            <option th:each="role : ${roles}" th:value="${role}" th:text="${role.getView()}"></option>
+        </select>
+    </div>
+    <button type="submit">Update</button>
+</form>
+</body>
+</html>
