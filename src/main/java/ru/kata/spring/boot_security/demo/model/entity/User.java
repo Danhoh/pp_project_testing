@@ -1,11 +1,7 @@
 package ru.kata.spring.boot_security.demo.model.entity;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchProfile;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.transaction.annotation.Transactional;
-import ru.kata.spring.boot_security.demo.model.entity.Role;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -48,8 +44,8 @@ public class User implements UserDetails {
     private String lastName;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "enum_mapping_table", joinColumns = @JoinColumn(name = "entity_id"))
-    @Column(name = "your_enum_column")
+    @CollectionTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private List<Role> role;
 
@@ -86,6 +82,10 @@ public class User implements UserDetails {
         return username;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -104,10 +104,6 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getFirstName() {

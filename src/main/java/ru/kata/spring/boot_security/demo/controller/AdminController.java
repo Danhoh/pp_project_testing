@@ -56,6 +56,7 @@ public class AdminController {
         model.addAttribute("user", userService.findById(id));
         return "update";
     }
+
     @ModelAttribute("roles")
     public Role[] getRoles() {
         return Role.values();
