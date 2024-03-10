@@ -43,12 +43,10 @@ public class AdminController {
         return "redirect:/admin/";
     }
 
-    @GetMapping("/delete")
-//    public String delete(@RequestParam("id") long id) {
-    public String delete() {
-//        userService.removeById(id);
-        System.out.println("WOROWROWOROWORWOR!");
-        return "redirect:/";
+    @PostMapping("/delete")
+    public String delete(@RequestParam("id") long id) {
+        userService.removeById(id);
+        return "redirect:/admin/";
     }
 
     @GetMapping("/update")
