@@ -1,10 +1,13 @@
-package ru.kata.spring.boot_security.demo.model;
+package ru.kata.spring.boot_security.demo.model.entity;
 
 public enum Role {
     MANAGER("Manager"),
     PROGRAMMER("Programmer"),
     CEO("CEO"),
-    CONSULTANT("Consultant");
+    CONSULTANT("Consultant"),
+
+    ADMIN("Admin"),
+    USER("User");
 
     private final String view;
 
@@ -14,5 +17,10 @@ public enum Role {
 
     public String getView() {
         return this.view;
+    }
+
+    @Override
+    public String toString() {
+        return this.name();
     }
 }

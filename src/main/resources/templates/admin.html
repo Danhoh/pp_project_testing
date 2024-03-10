@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Index page</title>
+    <style>
+        td, th {
+            border: 1px solid black;
+            padding: 20px;
+            font-size: 2vw;
+        }
+
+        table {
+            margin: 0 auto;
+        }
+
+        .bordered {
+            border: 1px solid black;
+            margin: 2vh;
+        }
+
+        .form-row {
+            margin: 5px;
+            border: 1px solid grey;
+        }
+
+        .delete {
+            background-color: rgba(255, 0, 0, 0.3);
+        }
+
+        .delete-button {
+            text-decoration: underline;
+            font-size: 2vw;
+            background: transparent;
+            border: none;
+            color: black;
+            cursor: pointer;
+        }
+
+        .update {
+            background-color: rgba(0, 255, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+<h1>Index page</h1>
+
+<div id="users-list" class="bordered">
+    <table>
+        <thead>
+        <tr>
+            <th>User id</th>
+            <th>username</th>
+            <th>password</th>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Role</th>
+            <th>Update</th>
+            <th>Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user: ${users}">
+            <td th:text="${user.getId()}"></td>
+            <td th:text="${user.getUsername()}"></td>
+            <td th:text="${user.getPassword()}"></td>
+            <td th:text="${user.getFirstName()}"></td>
+            <td th:text="${user.getLastName()}"></td>
+            <td>
+                <div
+                        th:each="userRole : ${user.getRole()}"
+                        class="form-row"
+                        th:text="${userRole}"
+                        th:name="${userRole}"
+                        th:value="${userRole}"
+                >
+
+                </div>
+            </td>
+            <td class="update">
+                <a th:href="@{/update(id=${user.getId()})}">Update</a>
+            </td>
+            <td class="delete">
+                <form th:action="@{/delete(id=${user.getId()})}" method="post">
+                    <button class="delete-button" type="submit">Delete!</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="bordered">
+    <h2>Add user</h2>
+    <form th:action="@{/add}" th:method="post" th:object="${user}">
+        <div style="visibility: hidden" class="form-row">
+            <label for="id">ID:</label>
+            <input name="id" id="id" type="text" th:field="*{id}">
+        </div>
+        <div class="form-row">
+            <div class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Error</div>
+            <label for="username">username:</label>
+            <input name="username" id="username" type="text" th:field="*{username}">
+        </div>
+        <div class="form-row">
+            <div class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{password}">Error</div>
+            <label for="username">password:</label>
+            <input name="password" id="password" type="text" th:field="*{password}">
+        </div>
+        <div class="form-row">
+            <div class="error" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Error</div>
+            <label for="firstName">firstName:</label>
+            <input name="firstName" id="firstName" type="text" th:field="*{firstName}">
+        </div>
+        <div class="form-row">
+            <div class="error" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Error</div>
+            <label for="lastName">lastName:</label>
+            <input name="lastName" id="lastName" type="text" th:field="*{lastName}">
+        </div>
+        <div class="form-row">
+            <label for="role">Role:</label>
+            <select name="role" id="role" th:field="*{role}" multiple>
+                <option th:each="role : ${roles}" th:value="${role}" th:text="${role.getView()}"></option>
+            </select>
+        </div>
+        <button type="submit">Update</button>
+    </form>
+</div>
+
+<div class="bordered">
+    <h2>Remove user by id</h2>
+    <p>Enter existing user id to delete him</p>
+    <form action="/delete" method="post">
+        <div class="form-row">
+            <label for="userId">User id:</label>
+            <input name="id" id="userId" type="text">
+        </div>
+        <button type="submit">Remove</button>
+    </form>
+</div>
+</body>
+</html>

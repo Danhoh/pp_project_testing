@@ -26,6 +26,11 @@
         <input name="username" id="username" type="text" th:field="*{username}">
     </div>
     <div class="form-row">
+        <div class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{password}">Error</div>
+        <label for="username">password:</label>
+        <input name="password" id="password" type="text" th:field="*{password}">
+    </div>
+    <div class="form-row">
         <div class="error" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Error</div>
         <label for="firstName">firstName:</label>
         <input name="firstName" id="firstName" type="text" th:field="*{firstName}">
@@ -37,7 +42,7 @@
     </div>
     <div class="form-row">
         <label for="role">Role:</label>
-        <select name="role" id="role" th:field="*{role}">
+        <select name="role" id="role" th:field="*{role}" multiple>
             <option th:each="role : ${roles}" th:value="${role}" th:text="${role.getView()}"></option>
         </select>
     </div>

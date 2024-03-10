@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.kata.spring.boot_security.demo.model.Role;
-import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.service.UserService;
+import ru.kata.spring.boot_security.demo.model.entity.Role;
+import ru.kata.spring.boot_security.demo.model.entity.User;
+import ru.kata.spring.boot_security.demo.service.data.UserService;
 
 import javax.validation.Valid;
 
@@ -26,11 +26,11 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/")
+    @GetMapping("/admin")
     public String get(Model model) {
         model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("user", new User());
-        return "index";
+        return "admin";
     }
 
     @PostMapping("/add")

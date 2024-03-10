@@ -1,15 +1,22 @@
-package ru.kata.spring.boot_security.demo.model;
+package ru.kata.spring.boot_security.demo.model.entity;
 
+import ru.kata.spring.boot_security.demo.model.entity.Role;
+
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class User {
@@ -20,6 +27,10 @@ public class User {
     @NotEmpty(message = "Username should be not empty")
     @Size(min = 3, max = 20, message = "Username should be in range 3 and 20 characters")
     private String username;
+
+    @NotEmpty(message = "Password should be not empty")
+    @Size(min = 3, max = 20, message = "Password should be in range 3 and 20 characters")
+    private String password;
     @NotEmpty(message = "First name should be not empty")
     @Pattern(regexp = "[A-Za-z]+", message = "Should be valid first name")
     @Size(min = 2, max = 20, message = "Firstname should be in range 2 and 20 characters")
@@ -28,8 +39,12 @@ public class User {
     @Pattern(regexp = "[A-Za-z]+", message = "Should be valid last name")
     @Size(min = 2, max = 20, message = "Last name should be in range 2 and 20 characters")
     private String lastName;
+
+    @ElementCollection
+    @CollectionTable(name = "enum_mapping_table", joinColumns = @JoinColumn(name = "entity_id"))
+    @Column(name = "your_enum_column")
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private List<Role> role;
 
     public User() {
 
@@ -39,12 +54,20 @@ public class User {
             String username,
             String firstName,
             String lastName,
-            Role role
+            ArrayList<Role> role
     ) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.role = role;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getUsername() {
@@ -71,11 +94,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public Role getRole() {
+    public List<Role> getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(List<Role> role) {
         this.role = role;
     }
 
