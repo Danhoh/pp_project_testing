@@ -4,8 +4,22 @@
     <title>Spring Security Example</title>
 </head>
 <body>
+<div th:replace="/layout/header"></div>
 <h1>User, welcome spring boot security page!</h1>
-
+<div>
+    <p>
+        <span>Username: </span> <span th:text="${user.getUsername()}"></span>
+    </p>
+    <p>
+        <span>First name: </span> <span th:text="${user.getFirstName()}"></span>
+    </p>
+    <p>
+        <span>Last name: </span> <span th:text="${user.getLastName()}"></span>
+    </p>
+    <p>
+        <span>Roles: </span> <span th:text="${user.getRole().toString()}"></span>
+    </p>
+</div>
 
 </body>
 </html>

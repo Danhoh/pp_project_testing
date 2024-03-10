@@ -43,6 +43,7 @@
     </style>
 </head>
 <body>
+<div th:replace="/layout/header"></div>
 
 <h1>Index page</h1>
 
@@ -79,10 +80,10 @@
                 </div>
             </td>
             <td class="update">
-                <a th:href="@{/update(id=${user.getId()})}">Update</a>
+                <a th:href="@{/admin/update(id=${user.getId()})}">Update</a>
             </td>
             <td class="delete">
-                <form th:action="@{/delete(id=${user.getId()})}" method="post">
+                <form th:action="@{/admin/delete(id=${user.getId()})}" method="post">
                     <button class="delete-button" type="submit">Delete!</button>
                 </form>
             </td>
@@ -93,7 +94,7 @@
 
 <div class="bordered">
     <h2>Add user</h2>
-    <form th:action="@{/add}" th:method="post" th:object="${user}">
+    <form th:action="@{/admin/add}" th:method="post" th:object="${user}">
         <div style="visibility: hidden" class="form-row">
             <label for="id">ID:</label>
             <input name="id" id="id" type="text" th:field="*{id}">
@@ -125,18 +126,6 @@
             </select>
         </div>
         <button type="submit">Update</button>
-    </form>
-</div>
-
-<div class="bordered">
-    <h2>Remove user by id</h2>
-    <p>Enter existing user id to delete him</p>
-    <form action="/delete" method="post">
-        <div class="form-row">
-            <label for="userId">User id:</label>
-            <input name="id" id="userId" type="text">
-        </div>
-        <button type="submit">Remove</button>
     </form>
 </div>
 </body>

@@ -31,15 +31,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/", "/index").permitAll().anyRequest().authenticated().and().formLogin().successHandler(successUserHandler).permitAll().and().logout().permitAll();
-
-//        http
-//                .authorizeRequests()
-//                .antMatchers("/admin/**/")
-//                .hasRole("ADMIN")
-//                .anyRequest().hasRole("USER")
-//                .and()
-//                .formLogin().permitAll();
+        http
+                .authorizeRequests()
+                    .antMatchers("/")
+                        .permitAll()
+                    .antMatchers("/admin/**/")
+                        .hasRole("ADMIN")
+                    .antMatchers("/user")
+                        .hasAnyRole("ADMIN", "USER")
+                    .anyRequest()
+                        .authenticated()
+                    .and()
+                .formLogin()
+                    .successHandler(successUserHandler)
+                        .permitAll()
+                        .and()
+                .logout()
+                    .permitAll();
     }
 
     @Bean
@@ -69,15 +77,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         return new InMemoryUserDetailsManager(user);
     }
-
-//    @Bean
-//    public DaoAuthenticationProvider fakeProvider() {
-//        DaoAuthenticationProvider daoAuthenticationProvider =
-//                new DaoAuthenticationProvider();
-//        daoAuthenticationProvider.setPasswordEncoder(passwordEncode());
-//        daoAuthenticationProvider.setUserDetailsService(userDetailsService());
-//
-//        return daoAuthenticationProvider;
-//    }
 }
 

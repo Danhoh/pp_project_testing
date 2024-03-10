@@ -1,5 +1,10 @@
 package ru.kata.spring.boot_security.demo.model.entity;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchProfile;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.entity.Role;
 
 import javax.persistence.CollectionTable;
@@ -8,6 +13,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,10 +22,11 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -40,7 +47,7 @@ public class User {
     @Size(min = 2, max = 20, message = "Last name should be in range 2 and 20 characters")
     private String lastName;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "enum_mapping_table", joinColumns = @JoinColumn(name = "entity_id"))
     @Column(name = "your_enum_column")
     @Enumerated(EnumType.STRING)
@@ -62,6 +69,11 @@ public class User {
         this.role = role;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return getRole();
+    }
+
     public String getPassword() {
         return password;
     }
@@ -72,6 +84,26 @@ public class User {
 
     public String getUsername() {
         return username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public void setUsername(String username) {

@@ -15,7 +15,8 @@
     </style>
 </head>
 <body>
-<form th:action="@{/add}" th:method="post" th:object="${user}">
+<div th:replace="/layout/header"></div>
+<form th:action="@{/admin/add}" th:method="post" th:object="${user}">
     <div style="visibility: hidden" class="form-row">
         <label for="id">ID:</label>
         <input name="id" id="id" type="text" th:field="*{id}">

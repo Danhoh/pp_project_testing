@@ -26,9 +26,7 @@ public class UserService implements UserDetailsService {
         Optional<User> userOptional = userRepository.findByUsername(username);
 
         if (userOptional.isPresent()) {
-            return new ru.kata.spring.boot_security.demo.model.userDetails.User(
-                    userOptional.get()
-            );
+            return userOptional.get();
         } else {
             throw new UsernameNotFoundException("User not found");
         }
