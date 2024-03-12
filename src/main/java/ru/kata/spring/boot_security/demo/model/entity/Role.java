@@ -3,10 +3,6 @@ package ru.kata.spring.boot_security.demo.model.entity;
 import org.springframework.security.core.GrantedAuthority;
 
 public enum Role implements GrantedAuthority {
-    ROLE_MANAGER("Manager"),
-    ROLE_PROGRAMMER("Programmer"),
-    ROLE_CEO("CEO"),
-    ROLE_CONSULTANT("Consultant"),
     ROLE_ADMIN("Admin"),
     ROLE_USER("User");
 
