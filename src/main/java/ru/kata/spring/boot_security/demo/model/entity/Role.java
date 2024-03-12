@@ -3,8 +3,8 @@ package ru.kata.spring.boot_security.demo.model.entity;
 import org.springframework.security.core.GrantedAuthority;
 
 public enum Role implements GrantedAuthority {
-    ROLE_ADMIN("Admin"),
-    ROLE_USER("User");
+    ROLE_ADMIN("ADMIN"),
+    ROLE_USER("USER");
 
     private final String view;
 

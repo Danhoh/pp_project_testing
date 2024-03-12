@@ -21,7 +21,7 @@
     <nav class="navbar navbar-dark bg-dark">
         <div class="">
             <p class="text-white mb-0">
-                <span class="bold">admin@mail.ru</span> with roles: ADMIN USER
+                <span class="bold" th:text="${principal.getUsername()}"></span> with roles: <span th:text="${principal.getRoleString()}"></span>
             </p>
         </div>
         <ul class="navbar-nav">
@@ -42,7 +42,7 @@
                     <a id="user-table-btn" class="nav-link active" href="#">Users table</a>
                 </li>
                 <li class="nav-item">
-                    <a id="new-user-btn" class="nav-link" href="#">New User</a>
+                    <a id="new-user-btn" class="nav-link" href="add">New User</a>
                 </li>
             </ul>
             <h2 id="page-heading" class="bg-light m-0 p-2 border-left border-right">All users</h2>
@@ -68,7 +68,7 @@
                     <td th:text="${user.getLastName()}"></td>
                     <td th:text="${user.getAge()}"></td>
                     <td th:text="${user.getUsername()}"></td>
-                    <td th:text="${user.getRole().toString()}"></td>
+                    <td th:text="${user.getRoleString()}"></td>
                     <td>
                         <button  type="button" class="btn btn-info" data-toggle="modal" data-target="#edit-modal">
                             Edit
@@ -82,41 +82,6 @@
                 </tr>
                 </tbody>
             </table>
-            <form id="new-user-form" th:object="${user}" th:method="post" th:action="@{/admin/add}" class="col-4 mx-auto">
-                <p class="">
-                    <div th:errors="*{firstName}" th:if="${#fields.hasErrors('username')}">Error</div>
-                    <label for="firstName" class="font-weight-bold text-center w-100">First name</label>
-                    <input th:field="*{firstName}" class="form-control" id="firstName" name="firstName" type="text">
-                </p>
-                <p class="">
-                    <div th:errors="*{lastName}" th:if="${#fields.hasErrors('username')}">Error</div>
-                    <label for="lastName" class="font-weight-bold text-center w-100">Last name</label>
-                    <input th:field="*{lastName}" class="form-control" id="lastName" name="lastName" type="text">
-                </p>
-                <p class="">
-                    <div th:errors="*{age}" th:if="${#fields.hasErrors('username')}">Error</div>
-                    <label for="age" class="font-weight-bold text-center w-100">Age</label>
-                    <input th:field="*{age}" class="form-control" id="age" name="age" type="text">
-                </p>
-                <p class="">
-                    <div th:errors="*{username}" th:if="${#fields.hasErrors('username')}">Error</div>
-                    <label for="email" class="font-weight-bold text-center w-100">Email</label>
-                    <input th:field="*{username}" class="form-control" id="email" name="email" type="text">
-                </p>
-                <p class="">
-                    <div th:errors="*{password}" th:if="${#fields.hasErrors('username')}">Error</div>
-                    <label for="password" class="font-weight-bold text-center w-100">Password</label>
-                    <input th:field="*{password}" class="form-control" id="password" name="password" type="password">
-                </p>
-                <p class="">
-                    <div th:errors="*{role}" th:if="${#fields.hasErrors('username')}">Error</div>
-                    <label for="role" class="font-weight-bold text-center w-100">Role</label>
-                    <select th:field="*{role}" class="form-control h-3" name="role" id="role" multiple style="height: 60px">
-                        <option th:each="role : ${roles}" th:text="${role.getView()}" th:value="${role}"></option>
-                    </select>
-                </p>
-                <input type="submit" value="Add new user" class="btn btn-success mx-auto d-block">
-            </form>
         </div>
     </section>
 </div>
@@ -158,6 +123,7 @@
                             <option>Admin</option>
                         </select>
                     </p>
+                    <!--                    <input type="submit" value="Add new user" class="btn btn-success mx-auto d-block">-->
                 </form>
             </div>
             <div class="modal-footer">

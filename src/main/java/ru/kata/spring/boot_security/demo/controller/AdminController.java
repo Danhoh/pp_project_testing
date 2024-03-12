@@ -13,7 +13,9 @@ import ru.kata.spring.boot_security.demo.model.entity.Role;
 import ru.kata.spring.boot_security.demo.model.entity.User;
 import ru.kata.spring.boot_security.demo.service.data.UserService;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 @RequestMapping("/admin")
@@ -26,17 +28,33 @@ public class AdminController {
     }
 
     @GetMapping("/")
-    public String get(Model model) {
+    public String get(Model model,
+    Principal principal) {
         model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("user", new User());
+
+        User user;
+
+        try {
+            user = userService.findByUsername(principal.getName());
+        } catch (EntityNotFoundException ex) {
+            user = new User();
+        }
+
+        model.addAttribute("principal", user);
         return "admin";
+    }
+
+    @GetMapping("/add")
+    public String addUserPage(@ModelAttribute("user") User user) {
+        return "add-user-form";
     }
 
     @PostMapping("/add")
     public String post(@ModelAttribute("user") @Valid User user,
                        BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "update";
+            return "add-user-form";
         }
         userService.save(user);
 
@@ -52,7 +70,7 @@ public class AdminController {
     @GetMapping("/update")
     public String update(@RequestParam long id, Model model) {
         model.addAttribute("user", userService.findById(id));
-        return "update";
+        return "add-user-form";
     }
 
     @ModelAttribute("roles")

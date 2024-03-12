@@ -22,6 +22,7 @@ import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 public class User implements UserDetails {
@@ -52,7 +53,6 @@ public class User implements UserDetails {
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private List<Role> role;
-
 
     @NotNull
     private Integer age;
@@ -164,5 +164,16 @@ public class User implements UserDetails {
                ", lastName='" + lastName + '\'' +
                ", role=" + role +
                '}';
+    }
+
+    public String getRoleString() {
+        try {
+            return role.stream()
+                    .map(Role::getView)
+                    .collect(Collectors.joining(" "));
+        } catch (Exception e) {
+            return "";
+        }
+
     }
 }
