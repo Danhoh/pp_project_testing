@@ -14,7 +14,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
@@ -26,6 +28,8 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Email
     @Column(unique = true, nullable = false)
     @NotEmpty(message = "Username should be not empty")
     @Size(min = 3, max = 20, message = "Username should be in range 3 and 20 characters")
@@ -48,6 +52,11 @@ public class User implements UserDetails {
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private List<Role> role;
+
+
+    @NotNull
+    private Integer age;
+
 
     public User() {
 
@@ -136,6 +145,14 @@ public class User implements UserDetails {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
     @Override
