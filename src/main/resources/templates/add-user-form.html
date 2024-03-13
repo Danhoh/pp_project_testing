@@ -17,23 +17,9 @@
     </style>
 </head>
 <body class="bg-light">
-<header>
-    <nav class="navbar navbar-dark bg-dark">
-        <div class="">
-            <p class="text-white mb-0">
-                <span class="bold">admin@mail.ru</span> with roles: ADMIN USER
-            </p>
-        </div>
-        <ul class="navbar-nav">
-            <li><a class="nav-link" href="/logout">Logout</a></li>
-        </ul>
-    </nav>
-</header>
+<div th:replace="/layout/header"></div>
 <div class="container-fluid row w-100 h-100 mt-4">
-    <aside class="col-2 bg-white ml-0 px-0">
-        <a href="#" class="btn btn-primary w-100 text-left">Admin</a>
-        <a href="#" class="btn btn-link w-100 text-left">User</a>
-    </aside>
+    <div th:replace="/layout/aside"></div>
     <section class="col-10">
         <h1>Admin panel</h1>
         <div>
@@ -75,11 +61,14 @@
                 <input th:field="*{password}" class="form-control" id="password" name="password" type="password">
                 </p>
                 <p class="">
-                <div class="alert alert-danger" th:errors="*{role}" th:if="${#fields.hasErrors('username')}">Error</div>
-                <label for="role" class="font-weight-bold text-center w-100">Role</label>
-                <select th:field="*{role}" class="form-control h-3" name="role" id="role" multiple style="height: 60px">
+<!--                <div class="alert alert-danger" th:errors="*{roles.roles}" th:if="${#fields.hasErrors('username')}">Error</div>-->
+                <label for="roles" class="font-weight-bold text-center w-100">Roles</label>
+                <select th:field="*{roles.roles}" class="form-control h-3" name="roles" id="roles" multiple style="height: 60px">
                     <option th:each="role : ${roles}" th:text="${role.getView()}" th:value="${role}"></option>
                 </select>
+<!--                <select th:field="*{roles}" class="form-control h-3" name="roles" id="roles" multiple style="height: 60px">-->
+<!--                    <option th:each="role : ${roles}" th:value="${role}" th:text="${role.getView()}"></option>-->
+<!--                </select>-->
                 </p>
                 <input type="submit" value="Add new user" class="btn btn-success mx-auto d-block">
             </form>

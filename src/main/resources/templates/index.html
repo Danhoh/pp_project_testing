@@ -1,11 +1,171 @@
 <!DOCTYPE html>
-<html lang="eu" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
->
+<html lang="en" class="h-100" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Spring Security Example</title>
+    <meta charset="UTF-8">
+    <title>Index page</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
 </head>
-<body>
+<body class="bg-light">
 <div th:replace="/layout/header"></div>
-<h1>Welcome to Index PAGE!</h1>
+<div class="container-fluid row w-100 h-100 mt-4">
+    <div th:replace="/layout/aside"></div>
+    <section class="col-10">
+        <h1>Admin panel</h1>
+        <div>
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a id="user-table-btn" class="nav-link active" href="#">Users table</a>
+                </li>
+                <li class="nav-item">
+                    <a id="new-user-btn" class="nav-link" href="add">New User</a>
+                </li>
+            </ul>
+            <h2 id="page-heading" class="bg-light m-0 p-2 border-left border-right">All users</h2>
+        </div>
+        <div class="bg-white p-4 border">
+            <table id="user-table" class="table table-inner table-striped px-3">
+                <thead>
+                <tr>
+                    <td class="font-weight-bold">ID</td>
+                    <td class="font-weight-bold">First Name</td>
+                    <td class="font-weight-bold">Last Name</td>
+                    <td class="font-weight-bold">Age</td>
+                    <td class="font-weight-bold">Email</td>
+                    <td class="font-weight-bold">Role</td>
+                    <td class="font-weight-bold">Edit</td>
+                    <td class="font-weight-bold">Delete</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user : ${users}">
+                    <td th:text="${user.getId()}"></td>
+                    <td th:text="${user.getFirstName()}"></td>
+                    <td th:text="${user.getLastName()}"></td>
+                    <td th:text="${user.getAge()}"></td>
+                    <td th:text="${user.getUsername()}"></td>
+                    <td th:text="${user.getRoles()}"></td>
+                    <td>
+                        <button  type="button" class="btn btn-info" data-toggle="modal" data-target="#edit-modal">
+                            Edit
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-modal">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete user</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="delete-new-user-form" method="post" action="#" class="col-6 mx-auto">
+                    <p class="">
+                        <label for="delete-id" class="font-weight-bold text-center w-100">First name</label>
+                        <input class="form-control" id="delete-id" name="firstName" type="text" disabled>
+                    </p>
+                    <p class="">
+                        <label for="delete-firstName" class="font-weight-bold text-center w-100">First name</label>
+                        <input class="form-control" id="delete-firstName" name="firstName" type="text" disabled>
+                    </p>
+                    <p class="">
+                        <label for="delete-lastName" class="font-weight-bold text-center w-100">Last name</label>
+                        <input class="form-control" id="delete-lastName" name="lastName" type="text" disabled>
+                    </p>
+                    <p class="">
+                        <label for="delete-age" class="font-weight-bold text-center w-100">Age</label>
+                        <input class="form-control" id="delete-age" name="age" type="text" disabled>
+                    </p>
+                    <p class="">
+                        <label for="delete-email" class="font-weight-bold text-center w-100">Email</label>
+                        <input class="form-control" id="delete-email" name="email" type="text" disabled>
+                    </p>
+                    <p class="">
+                        <label for="delete-role" class="font-weight-bold text-center w-100">Role</label>
+                        <select class="form-control h-3" name="role" id="delete-role" multiple style="height: 60px" disabled>
+                            <option>User</option>
+                            <option>Admin</option>
+                        </select>
+                    </p>
+                    <!--                    <input type="submit" value="Add new user" class="btn btn-success mx-auto d-block">-->
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit user</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-new-user-form" method="post" action="#" class="col-6 mx-auto">
+                    <p class="">
+                        <label for="edit-id" class="font-weight-bold text-center w-100">ID</label>
+                        <input class="form-control" id="edit-id" name="firstName" type="text">
+                    </p>
+                    <p class="">
+                        <label for="edit-firstName" class="font-weight-bold text-center w-100">First name</label>
+                        <input class="form-control" id="edit-firstName" name="firstName" type="text">
+                    </p>
+                    <p class="">
+                        <label for="edit-lastName" class="font-weight-bold text-center w-100">Last name</label>
+                        <input class="form-control" id="edit-lastName" name="lastName" type="text">
+                    </p>
+                    <p class="">
+                        <label for="edit-age" class="font-weight-bold text-center w-100">Age</label>
+                        <input class="form-control" id="edit-age" name="age" type="number" min="1" max="100">
+                    </p>
+                    <p class="">
+                        <label for="edit-email" class="font-weight-bold text-center w-100">Email</label>
+                        <input class="form-control" id="edit-email" name="email" type="text">
+                    </p>
+                    <p class="">
+                        <label for="edit-role" class="font-weight-bold text-center w-100">Role</label>
+                        <select class="form-control h-3" name="role" id="edit-role" multiple style="height: 60px">
+                            <option>User</option>
+                            <option>Admin</option>
+                        </select>
+                    </p>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Edit</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
+

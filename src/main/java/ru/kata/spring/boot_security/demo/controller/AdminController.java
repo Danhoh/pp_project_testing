@@ -28,20 +28,9 @@ public class AdminController {
     }
 
     @GetMapping("/")
-    public String get(Model model,
-    Principal principal) {
+    public String adminPage(Model model) {
         model.addAttribute("users", userService.getAllUsers());
-        model.addAttribute("user", new User());
 
-        User user;
-
-        try {
-            user = userService.findByUsername(principal.getName());
-        } catch (EntityNotFoundException ex) {
-            user = new User();
-        }
-
-        model.addAttribute("principal", user);
         return "admin";
     }
 
@@ -67,14 +56,19 @@ public class AdminController {
         return "redirect:/admin/";
     }
 
-    @GetMapping("/update")
-    public String update(@RequestParam long id, Model model) {
-        model.addAttribute("user", userService.findById(id));
-        return "add-user-form";
-    }
+//    @GetMapping("/update")
+//    public String update(@RequestParam long id, Model model) {
+//        model.addAttribute("user", userService.findById(id));
+//        return "add-user-form";
+//    }
 
     @ModelAttribute("roles")
     public Role[] getRoles() {
         return Role.values();
+    }
+
+    @ModelAttribute("user")
+    public User getUser() {
+        return new User();
     }
 }

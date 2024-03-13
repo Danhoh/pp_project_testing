@@ -1,8 +1,10 @@
 package ru.kata.spring.boot_security.demo.model.entity;
 
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -14,6 +16,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -48,35 +52,32 @@ public class User implements UserDetails {
     @Size(min = 2, max = 20, message = "Last name should be in range 2 and 20 characters")
     private String lastName;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "role")
-    @Enumerated(EnumType.STRING)
-    private List<Role> role;
+    @OneToOne(cascade = CascadeType.ALL)
+    Roles roles;
 
     @NotNull
     private Integer age;
 
 
     public User() {
-
+        this.roles = new Roles();
     }
 
     public User(
             String username,
             String firstName,
             String lastName,
-            ArrayList<Role> role
+            Roles roles
     ) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.role = role;
+        this.roles = roles;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRole();
+        return roles.getRoles();
     }
 
     public String getPassword() {
@@ -131,14 +132,6 @@ public class User implements UserDetails {
         this.lastName = lastName;
     }
 
-    public List<Role> getRole() {
-        return role;
-    }
-
-    public void setRole(List<Role> role) {
-        this.role = role;
-    }
-
     public long getId() {
         return id;
     }
@@ -155,25 +148,24 @@ public class User implements UserDetails {
         this.age = age;
     }
 
+    public Roles getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Roles roles) {
+        this.roles = roles;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                "id=" + id +
                ", username='" + username + '\'' +
+               ", password='" + password + '\'' +
                ", firstName='" + firstName + '\'' +
                ", lastName='" + lastName + '\'' +
-               ", role=" + role +
+               ", roles=" + roles +
+               ", age=" + age +
                '}';
-    }
-
-    public String getRoleString() {
-        try {
-            return role.stream()
-                    .map(Role::getView)
-                    .collect(Collectors.joining(" "));
-        } catch (Exception e) {
-            return "";
-        }
-
     }
 }

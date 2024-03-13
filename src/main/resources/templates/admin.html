@@ -17,23 +17,16 @@
     </style>
 </head>
 <body class="bg-light">
-<header>
-    <nav class="navbar navbar-dark bg-dark">
-        <div class="">
-            <p class="text-white mb-0">
-                <span class="bold" th:text="${principal.getUsername()}"></span> with roles: <span th:text="${principal.getRoleString()}"></span>
-            </p>
-        </div>
-        <ul class="navbar-nav">
-            <li><a class="nav-link" href="/logout">Logout</a></li>
-        </ul>
-    </nav>
-</header>
+<form id="new-user-form" th:method="post" th:action="@{/admin/delete}" class="col-4 mx-auto">
+    <p class="">
+    <label for="firstName" class="font-weight-bold text-center w-100">First name</label>
+    <input th:name="id" class="form-control" id="firstName" name="firstName" type="text">
+    </p>
+    <input type="submit" value="Add new user" class="btn btn-success mx-auto d-block">
+</form>
+<div th:replace="/layout/header"></div>
 <div class="container-fluid row w-100 h-100 mt-4">
-    <aside class="col-2 bg-white ml-0 px-0">
-        <a href="#" class="btn btn-primary w-100 text-left">Admin</a>
-        <a href="#" class="btn btn-link w-100 text-left">User</a>
-    </aside>
+    <div th:replace="/layout/aside"></div>
     <section class="col-10">
         <h1>Admin panel</h1>
         <div>
@@ -61,14 +54,14 @@
                     <td class="font-weight-bold">Delete</td>
                 </tr>
                 </thead>
-                <tbody th:each="user : ${users}">
-                <tr>
+                <tbody>
+                <tr th:each="user : ${users}">
                     <td th:text="${user.getId()}"></td>
                     <td th:text="${user.getFirstName()}"></td>
                     <td th:text="${user.getLastName()}"></td>
                     <td th:text="${user.getAge()}"></td>
                     <td th:text="${user.getUsername()}"></td>
-                    <td th:text="${user.getRoleString()}"></td>
+                    <td th:text="${user.getRoles()}"></td>
                     <td>
                         <button  type="button" class="btn btn-info" data-toggle="modal" data-target="#edit-modal">
                             Edit
@@ -95,11 +88,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="delete-new-user-form" method="post" action="#" class="col-6 mx-auto">
-                    <p class="">
-                        <label for="delete-id" class="font-weight-bold text-center w-100">First name</label>
-                        <input class="form-control" id="delete-id" name="firstName" type="text" disabled>
-                    </p>
+                <form id="delete-new-user-form" method="post" action="/admin/delete" class="col-6 mx-auto">
                     <p class="">
                         <label for="delete-firstName" class="font-weight-bold text-center w-100">First name</label>
                         <input class="form-control" id="delete-firstName" name="firstName" type="text" disabled>
@@ -123,12 +112,13 @@
                             <option>Admin</option>
                         </select>
                     </p>
-                    <!--                    <input type="submit" value="Add new user" class="btn btn-success mx-auto d-block">-->
+                    <input type="text" name="id" disabled style="display: none">
+                    <button class="btn btn-primary mx-auto" type="submit">send</button>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger">Delete</button>
+                <button id="delete-submit-btn" type="button" class="btn btn-danger">Delete</button>
             </div>
         </div>
     </div>
@@ -137,16 +127,16 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Delete user</h5>
+                <h5 class="modal-title" id="editModalLabel">Edit user</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form id="edit-new-user-form" method="post" action="#" class="col-6 mx-auto">
+                <form id="edit-new-user-form" th:object="${user}" th:method="post" th:action="@{/admin/add}" class="col-6 mx-auto">
                     <p class="">
                         <label for="edit-id" class="font-weight-bold text-center w-100">ID</label>
-                        <input class="form-control" id="edit-id" name="firstName" type="text">
+                        <input class="form-control" id="edit-id" th:name="id" type="text" disabled>
                     </p>
                     <p class="">
                         <label for="edit-firstName" class="font-weight-bold text-center w-100">First name</label>
@@ -175,11 +165,61 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Edit</button>
+                <button id="edit-submit-btn" type="button" class="btn btn-primary">Edit</button>
             </div>
         </div>
     </div>
 </div>
 </body>
+<!--form autofill-->
+<script defer>
+    let rows = document.querySelectorAll("#user-table tbody tr");
+
+    rows.forEach(row => {
+        let deleteBtn = row.querySelector(".btn-danger")
+        let editBtn = row.querySelector(".btn-info")
+
+        let cols = row.querySelectorAll("td");
+
+        let id = cols[0].innerHTML;
+        let firstName = cols[1].innerHTML;
+        let lastName = cols[2].innerHTML;
+        let age = cols[3].innerHTML;
+        let email = cols[4].innerHTML;
+        let role = cols[5].innerHTML;
+
+        let deleteForm = document.querySelector("#delete-modal form");
+        let editForm = document.querySelector("#edit-modal form");
+
+        let deleteInputs = deleteForm.querySelectorAll("input");
+        let editInputs = editForm.querySelectorAll("input");
+
+        deleteBtn.onclick = (e) => {
+            deleteInputs[0].value = firstName;
+            deleteInputs[1].value = lastName;
+            deleteInputs[2].value = age;
+            deleteInputs[3].value = email;
+            deleteInputs[4].value = id;
+        }
+
+        editBtn.onclick = (e) => {
+            editInputs[0].value = id;
+            editInputs[1].value = firstName;
+            editInputs[2].value = lastName;
+            editInputs[3].value = age;
+            editInputs[4].value = email;
+        }
+
+        let editModalBtn = document.querySelector("#edit-modal .btn-primary");
+        let deleteModalBtn = document.querySelector("#delete-modal .btn-danger");
+
+        deleteModalBtn.onclick = (e) => {
+            deleteForm.submit();
+        }
+        editModalBtn.onclick = (e) => {
+            editForm.submit();
+        }
+    })
+</script>
 </html>
 
