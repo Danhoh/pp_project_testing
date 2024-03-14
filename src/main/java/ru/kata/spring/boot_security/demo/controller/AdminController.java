@@ -59,7 +59,7 @@ public class AdminController {
             userService.save(persistedUser);
         } catch (Exception ex) {
             model.addAttribute("user", persistedUser);
-            return "redirect:add";
+            return "add-user-form";
         }
 
         return "redirect:/admin";
