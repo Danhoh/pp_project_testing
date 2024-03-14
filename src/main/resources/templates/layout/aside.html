@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<aside th:if="${#request.getRequestURI().contains('admin')}" class="col-2 bg-white ml-0 px-0" xmlns:th="http://www.thymeleaf.org">
-    <a th:if="${principal.getRoles().hasRole('ADMIN')}" href="/admin/" class="btn btn-primary w-100 text-left">Admin</a>
-    <a href="/user" class="btn w-100 text-left">User</a>
+<aside class="col-2 bg-white ml-0 px-0" th:if="${#request.getRequestURI().contains('admin')}"
+       xmlns:th="http://www.thymeleaf.org">
+    <a class="btn btn-primary w-100 text-left" href="/admin/" th:if="${principal.getRoles().hasRole('ADMIN')}">Admin</a>
+    <a class="btn w-100 text-left" href="/user">User</a>
 </aside>
-<aside th:if="${!#request.getRequestURI().contains('admin')}" class="col-2 bg-white ml-0 px-0" xmlns:th="http://www.thymeleaf.org">
-    <a th:if="${principal.getRoles().hasRole('ADMIN')}" href="/admin/" class="btn w-100 text-left">Admin</a>
-    <a href="/user" class="btn btn-primary w-100 text-left">User</a>
+<aside class="col-2 bg-white ml-0 px-0" th:if="${!#request.getRequestURI().contains('admin')}"
+       xmlns:th="http://www.thymeleaf.org">
+    <a class="btn w-100 text-left" href="/admin/" th:if="${principal.getRoles().hasRole('ADMIN')}">Admin</a>
+    <a class="btn btn-primary w-100 text-left" href="/user">User</a>
 </aside>

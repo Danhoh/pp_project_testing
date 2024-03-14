@@ -26,6 +26,9 @@ public class UserService implements UserDetailsService {
         Optional<User> userOptional = userRepository.findByUsername(username);
 
         if (userOptional.isPresent()) {
+//            Hibernate.initialize(userOptional.get().getRoles());      --- не работает, ошибка ленивой инициализации ролей
+            System.out.println(userOptional.get().getRoles());        //--- тут явно вызываю роли чтоб они инициализировались, как это делать неявно хз пока
+
             return userOptional.get();
         } else {
             throw new UsernameNotFoundException("User not found");

@@ -1,47 +1,36 @@
 package ru.kata.spring.boot_security.demo.model.entity;
 
-import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 public class User implements UserDetails {
+    @OneToOne(cascade = CascadeType.ALL)
+    Roles roles;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     @Email
     @Column(unique = true, nullable = false)
     @NotEmpty(message = "Username should be not empty")
     @Size(min = 3, max = 20, message = "Username should be in range 3 and 20 characters")
     private String username;
-
     @NotEmpty(message = "Password should be not empty")
-    @Size(min = 3, max = 20, message = "Password should be in range 3 and 20 characters")
+    @Column(columnDefinition = "TEXT")
     private String password;
     @NotEmpty(message = "First name should be not empty")
     @Pattern(regexp = "[A-Za-z]+", message = "Should be valid first name")
@@ -51,10 +40,6 @@ public class User implements UserDetails {
     @Pattern(regexp = "[A-Za-z]+", message = "Should be valid last name")
     @Size(min = 2, max = 20, message = "Last name should be in range 2 and 20 characters")
     private String lastName;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    Roles roles;
-
     @NotNull
     private Integer age;
 

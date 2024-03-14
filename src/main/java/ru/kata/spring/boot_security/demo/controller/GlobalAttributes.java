@@ -1,16 +1,12 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import ru.kata.spring.boot_security.demo.model.entity.Role;
-import ru.kata.spring.boot_security.demo.model.entity.Roles;
 import ru.kata.spring.boot_security.demo.model.entity.User;
 import ru.kata.spring.boot_security.demo.service.data.UserService;
 
-import javax.persistence.EntityNotFoundException;
 import java.security.Principal;
 
 @ControllerAdvice

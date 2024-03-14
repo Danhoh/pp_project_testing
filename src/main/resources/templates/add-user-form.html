@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" class="h-100" xmlns:th="http://www.thymeleaf.org">
+<html class="h-100" lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Index page</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -25,49 +25,55 @@
         <div>
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                    <a id="user-table-btn" class="nav-link" href="/admin/">Users table</a>
+                    <a class="nav-link" href="/admin/" id="user-table-btn">Users table</a>
                 </li>
                 <li class="nav-item">
-                    <a id="new-user-btn" class="nav-link active" href="#">New User</a>
+                    <a class="nav-link active" href="#" id="new-user-btn">New User</a>
                 </li>
             </ul>
-            <h2 id="page-heading" class="bg-light m-0 p-2 border-left border-right">Add new user</h2>
+            <h2 class="bg-light m-0 p-2 border-left border-right" id="page-heading">Add new user</h2>
         </div>
         <div class="bg-white p-4 border">
-            <form id="new-user-form" th:object="${user}" th:method="post" th:action="@{/admin/add}" class="col-4 mx-auto">
+            <form class="col-4 mx-auto" id="new-user-form" th:action="@{/admin/add}" th:method="post"
+                  th:object="${user}">
                 <p class="">
-                <div class="alert alert-danger" th:errors="*{firstName}" th:if="${#fields.hasErrors('firstName')}">Error</div>
-                <label for="firstName" class="font-weight-bold text-center w-100">First name</label>
-                <input th:field="*{firstName}" class="form-control" id="firstName" name="firstName" type="text">
+                <div class="alert alert-danger" th:errors="*{firstName}" th:if="${#fields.hasErrors('firstName')}">
+                    Error
+                </div>
+                <label class="font-weight-bold text-center w-100" for="firstName">First name</label>
+                <input class="form-control" id="firstName" name="firstName" th:field="*{firstName}" type="text">
                 </p>
                 <p class="">
-                <div class="alert alert-danger" th:errors="*{lastName}" th:if="${#fields.hasErrors('lastName')}">Error</div>
-                <label for="lastName" class="font-weight-bold text-center w-100">Last name</label>
-                <input th:field="*{lastName}" class="form-control" id="lastName" name="lastName" type="text">
+                <div class="alert alert-danger" th:errors="*{lastName}" th:if="${#fields.hasErrors('lastName')}">Error
+                </div>
+                <label class="font-weight-bold text-center w-100" for="lastName">Last name</label>
+                <input class="form-control" id="lastName" name="lastName" th:field="*{lastName}" type="text">
                 </p>
                 <p class="">
                 <div class="alert alert-danger" th:errors="*{age}" th:if="${#fields.hasErrors('age')}">Error</div>
-                <label for="age" class="font-weight-bold text-center w-100">Age</label>
-                <input th:field="*{age}" class="form-control" id="age" name="age" type="text">
+                <label class="font-weight-bold text-center w-100" for="age">Age</label>
+                <input class="form-control" id="age" name="age" th:field="*{age}" type="text">
                 </p>
                 <p class="">
-                <div class="alert alert-danger" th:errors="*{username}" th:if="${#fields.hasErrors('username')}">Error</div>
-                <label for="email" class="font-weight-bold text-center w-100">Email</label>
-                <input th:field="*{username}" class="form-control" id="email" name="email" type="text">
+                <div class="alert alert-danger" th:errors="*{username}" th:if="${#fields.hasErrors('username')}">Error
+                </div>
+                <label class="font-weight-bold text-center w-100" for="email">Email</label>
+                <input class="form-control" id="email" name="email" th:field="*{username}" type="text">
                 </p>
                 <p class="">
-                <div class="alert alert-danger" th:errors="*{password}" th:if="${#fields.hasErrors('password')}">Error</div>
-                <label for="password" class="font-weight-bold text-center w-100">Password</label>
-                <input th:field="*{password}" class="form-control" id="password" name="password" type="password">
+                <div class="alert alert-danger" th:errors="*{password}" th:if="${#fields.hasErrors('password')}">Error
+                </div>
+                <label class="font-weight-bold text-center w-100" for="password">Password</label>
+                <input class="form-control" id="password" name="password" th:field="*{password}" type="password">
                 </p>
                 <p class="">
-<!--                <div class="alert alert-danger" th:errors="*{roles.roles}" th:if="${#fields.hasErrors('username')}">Error</div>-->
-                <label for="roles" class="font-weight-bold text-center w-100">Roles</label>
-                <select th:field="*{roles.roles}" class="form-control h-3" name="roles" id="roles" multiple style="height: 60px">
-                    <option th:each="role : ${roles}" th:text="${role.getView()}" th:value="${role}"></option>
-                </select>
+                    <label class="font-weight-bold text-center w-100" for="roles">Roles</label>
+                    <select class="form-control h-3" id="roles" multiple name="roles" style="height: 60px"
+                            th:field="*{roles.roles}">
+                        <option th:each="role : ${roles}" th:text="${role.getView()}" th:value="${role}"></option>
+                    </select>
                 </p>
-                <input type="submit" value="Add new user" class="btn btn-success mx-auto d-block">
+                <input class="btn btn-success mx-auto d-block" type="submit" value="Add new user">
             </form>
         </div>
     </section>
