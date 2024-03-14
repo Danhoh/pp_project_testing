@@ -28,7 +28,7 @@
                     <a class="nav-link active" href="#" id="user-table-btn">Users table</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="admin/add" id="new-user-btn">New User</a>
+                    <a class="nav-link" href="/admin/add" id="new-user-btn">New User</a>
                 </li>
             </ul>
             <h2 class="bg-light m-0 p-2 border-left border-right" id="page-heading">All users</h2>
@@ -157,7 +157,7 @@
                     <p class="">
                         <label class="font-weight-bold text-center w-100" for="edit-password">Password</label>
                         <input class="form-control" id="edit-password" th:field="*{password}" th:name="password"
-                               type="password">
+                               type="password" autocomplete="off">
                     </p>
                     <p class="">
                         <label class="font-weight-bold text-center w-100" for="edit-role">Role</label>
