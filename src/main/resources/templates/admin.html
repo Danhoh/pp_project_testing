@@ -17,13 +17,6 @@
     </style>
 </head>
 <body class="bg-light">
-<form id="new-user-form" th:method="post" th:action="@{/admin/delete}" class="col-4 mx-auto">
-    <p class="">
-    <label for="firstName" class="font-weight-bold text-center w-100">First name</label>
-    <input th:name="id" class="form-control" id="firstName" name="firstName" type="text">
-    </p>
-    <input type="submit" value="Add new user" class="btn btn-success mx-auto d-block">
-</form>
 <div th:replace="/layout/header"></div>
 <div class="container-fluid row w-100 h-100 mt-4">
     <div th:replace="/layout/aside"></div>
@@ -88,7 +81,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="delete-new-user-form" method="post" action="/admin/delete" class="col-6 mx-auto">
+                <form id="delete-new-user-form" th:method="post" th:action="@{/admin/delete}" class="col-6 mx-auto">
                     <p class="">
                         <label for="delete-firstName" class="font-weight-bold text-center w-100">First name</label>
                         <input class="form-control" id="delete-firstName" name="firstName" type="text" disabled>
@@ -112,8 +105,7 @@
                             <option>Admin</option>
                         </select>
                     </p>
-                    <input type="text" name="id" disabled style="display: none">
-                    <button class="btn btn-primary mx-auto" type="submit">send</button>
+                    <input class="form-control" type="text" th:name="id" style="display: none">
                 </form>
             </div>
             <div class="modal-footer">
@@ -133,32 +125,36 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="edit-new-user-form" th:object="${user}" th:method="post" th:action="@{/admin/add}" class="col-6 mx-auto">
+                <form id="edit-new-user-form" th:object="${user}" th:method="post" th:action="@{/admin/update}" class="col-6 mx-auto">
                     <p class="">
                         <label for="edit-id" class="font-weight-bold text-center w-100">ID</label>
-                        <input class="form-control" id="edit-id" th:name="id" type="text" disabled>
+                        <input class="form-control" id="edit-id" type="text" disabled>
                     </p>
+                    <input th:field="*{id}" class="form-control" th:name="id" type="hidden">
                     <p class="">
                         <label for="edit-firstName" class="font-weight-bold text-center w-100">First name</label>
-                        <input class="form-control" id="edit-firstName" name="firstName" type="text">
+                        <input th:field="*{firstName}" class="form-control" id="edit-firstName" th:name="firstName" type="text">
                     </p>
                     <p class="">
                         <label for="edit-lastName" class="font-weight-bold text-center w-100">Last name</label>
-                        <input class="form-control" id="edit-lastName" name="lastName" type="text">
+                        <input th:field="*{lastName}" class="form-control" id="edit-lastName" th:name="lastName" type="text">
                     </p>
                     <p class="">
                         <label for="edit-age" class="font-weight-bold text-center w-100">Age</label>
-                        <input class="form-control" id="edit-age" name="age" type="number" min="1" max="100">
+                        <input th:field="*{age}" class="form-control" id="edit-age" th:name="age" type="number" min="1" max="100">
                     </p>
                     <p class="">
                         <label for="edit-email" class="font-weight-bold text-center w-100">Email</label>
-                        <input class="form-control" id="edit-email" name="email" type="text">
+                        <input th:field="*{username}" class="form-control" id="edit-email" th:name="username" type="text">
+                    </p>
+                    <p class="">
+                        <label for="edit-password" class="font-weight-bold text-center w-100">Password</label>
+                        <input th:field="*{password}" class="form-control" id="edit-password" th:name="password" type="password">
                     </p>
                     <p class="">
                         <label for="edit-role" class="font-weight-bold text-center w-100">Role</label>
-                        <select class="form-control h-3" name="role" id="edit-role" multiple style="height: 60px">
-                            <option>User</option>
-                            <option>Admin</option>
+                        <select th:field="*{roles.roles}" class="form-control h-3" th:name="roles" id="edit-role" multiple style="height: 60px">
+                            <option th:each="role : ${roles}" th:text="${role.getView()}" th:value="${role}"></option>
                         </select>
                     </p>
                 </form>
@@ -191,8 +187,8 @@
         let deleteForm = document.querySelector("#delete-modal form");
         let editForm = document.querySelector("#edit-modal form");
 
-        let deleteInputs = deleteForm.querySelectorAll("input");
-        let editInputs = editForm.querySelectorAll("input");
+        let deleteInputs = deleteForm.querySelectorAll("input.form-control");
+        let editInputs = editForm.querySelectorAll("input.form-control");
 
         deleteBtn.onclick = (e) => {
             deleteInputs[0].value = firstName;
@@ -204,10 +200,11 @@
 
         editBtn.onclick = (e) => {
             editInputs[0].value = id;
-            editInputs[1].value = firstName;
-            editInputs[2].value = lastName;
-            editInputs[3].value = age;
-            editInputs[4].value = email;
+            editInputs[1].value = id;
+            editInputs[2].value = firstName;
+            editInputs[3].value = lastName;
+            editInputs[4].value = age;
+            editInputs[5].value = email;
         }
 
         let editModalBtn = document.querySelector("#edit-modal .btn-primary");

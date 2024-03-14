@@ -36,17 +36,17 @@
         <div class="bg-white p-4 border">
             <form id="new-user-form" th:object="${user}" th:method="post" th:action="@{/admin/add}" class="col-4 mx-auto">
                 <p class="">
-                <div class="alert alert-danger" th:errors="*{firstName}" th:if="${#fields.hasErrors('username')}">Error</div>
+                <div class="alert alert-danger" th:errors="*{firstName}" th:if="${#fields.hasErrors('firstName')}">Error</div>
                 <label for="firstName" class="font-weight-bold text-center w-100">First name</label>
                 <input th:field="*{firstName}" class="form-control" id="firstName" name="firstName" type="text">
                 </p>
                 <p class="">
-                <div class="alert alert-danger" th:errors="*{lastName}" th:if="${#fields.hasErrors('username')}">Error</div>
+                <div class="alert alert-danger" th:errors="*{lastName}" th:if="${#fields.hasErrors('lastName')}">Error</div>
                 <label for="lastName" class="font-weight-bold text-center w-100">Last name</label>
                 <input th:field="*{lastName}" class="form-control" id="lastName" name="lastName" type="text">
                 </p>
                 <p class="">
-                <div class="alert alert-danger" th:errors="*{age}" th:if="${#fields.hasErrors('username')}">Error</div>
+                <div class="alert alert-danger" th:errors="*{age}" th:if="${#fields.hasErrors('age')}">Error</div>
                 <label for="age" class="font-weight-bold text-center w-100">Age</label>
                 <input th:field="*{age}" class="form-control" id="age" name="age" type="text">
                 </p>
@@ -56,7 +56,7 @@
                 <input th:field="*{username}" class="form-control" id="email" name="email" type="text">
                 </p>
                 <p class="">
-                <div class="alert alert-danger" th:errors="*{password}" th:if="${#fields.hasErrors('username')}">Error</div>
+                <div class="alert alert-danger" th:errors="*{password}" th:if="${#fields.hasErrors('password')}">Error</div>
                 <label for="password" class="font-weight-bold text-center w-100">Password</label>
                 <input th:field="*{password}" class="form-control" id="password" name="password" type="password">
                 </p>
@@ -66,9 +66,6 @@
                 <select th:field="*{roles.roles}" class="form-control h-3" name="roles" id="roles" multiple style="height: 60px">
                     <option th:each="role : ${roles}" th:text="${role.getView()}" th:value="${role}"></option>
                 </select>
-<!--                <select th:field="*{roles}" class="form-control h-3" name="roles" id="roles" multiple style="height: 60px">-->
-<!--                    <option th:each="role : ${roles}" th:value="${role}" th:text="${role.getView()}"></option>-->
-<!--                </select>-->
                 </p>
                 <input type="submit" value="Add new user" class="btn btn-success mx-auto d-block">
             </form>

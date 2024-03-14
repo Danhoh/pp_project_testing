@@ -13,9 +13,7 @@ import ru.kata.spring.boot_security.demo.model.entity.Role;
 import ru.kata.spring.boot_security.demo.model.entity.User;
 import ru.kata.spring.boot_security.demo.service.data.UserService;
 
-import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
-import java.security.Principal;
 
 @Controller
 @RequestMapping("/admin")
@@ -27,8 +25,9 @@ public class AdminController {
         this.userService = userService;
     }
 
-    @GetMapping("/")
-    public String adminPage(Model model) {
+    @GetMapping
+    public String adminPage(@ModelAttribute("user") User user,
+                            Model model) {
         model.addAttribute("users", userService.getAllUsers());
 
         return "admin";
@@ -40,35 +39,40 @@ public class AdminController {
     }
 
     @PostMapping("/add")
-    public String post(@ModelAttribute("user") @Valid User user,
-                       BindingResult bindingResult) {
+    public String addPost(@ModelAttribute("user") @Valid User user,
+                          BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "add-user-form";
         }
         userService.save(user);
 
-        return "redirect:/admin/";
+        return "redirect:/admin";
+    }
+
+    @PostMapping("/update")
+    public String updatePost(@ModelAttribute("user") User user,
+                             Model model) {
+        User persistedUser = userService.findById(user.getId());
+        persistedUser.merge(user);
+
+        try {
+            userService.save(persistedUser);
+        } catch (Exception ex) {
+            model.addAttribute("user", persistedUser);
+            return "redirect:add";
+        }
+
+        return "redirect:/admin";
     }
 
     @PostMapping("/delete")
-    public String delete(@RequestParam("id") long id) {
+    public String deletePost(@RequestParam("id") long id) {
         userService.removeById(id);
-        return "redirect:/admin/";
+        return "redirect:/admin";
     }
-
-//    @GetMapping("/update")
-//    public String update(@RequestParam long id, Model model) {
-//        model.addAttribute("user", userService.findById(id));
-//        return "add-user-form";
-//    }
 
     @ModelAttribute("roles")
     public Role[] getRoles() {
         return Role.values();
-    }
-
-    @ModelAttribute("user")
-    public User getUser() {
-        return new User();
     }
 }

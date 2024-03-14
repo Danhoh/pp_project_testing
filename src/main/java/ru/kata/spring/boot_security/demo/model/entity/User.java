@@ -168,4 +168,19 @@ public class User implements UserDetails {
                ", age=" + age +
                '}';
     }
+
+    public void merge(User user) {
+        this.setFirstName(user.getFirstName());
+        this.setLastName(user.getLastName());
+        this.setAge(user.getAge());
+        this.setUsername(user.getUsername());
+
+        if (!user.getRoles().getRoles().isEmpty()) {
+            this.setRoles(user.getRoles());
+        }
+
+        if (!user.getPassword().isEmpty()) {
+            this.setPassword(user.getPassword());
+        }
+    }
 }
