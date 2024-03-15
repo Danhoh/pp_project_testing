@@ -21,11 +21,11 @@ import java.util.Collection;
 
 @Entity
 public class User implements UserDetails {
+    @OneToOne(cascade = CascadeType.ALL)
+    Roles roles;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @OneToOne(cascade = CascadeType.ALL)
-    Roles roles;
     @NotEmpty(groups = {CreateValidation.class}, message = "Email should be not empty")
     @Email(groups = {CreateValidation.class, UpdateValidation.class})
     @Column(unique = true, nullable = false)

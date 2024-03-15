@@ -16,8 +16,6 @@ import ru.kata.spring.boot_security.demo.model.entity.validation.CreateValidatio
 import ru.kata.spring.boot_security.demo.model.entity.validation.UpdateValidation;
 import ru.kata.spring.boot_security.demo.service.data.UserService;
 
-import javax.validation.Valid;
-
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -54,8 +52,7 @@ public class AdminController {
 
     @PostMapping("/update")
     public String updatePost(@ModelAttribute("user") @Validated({UpdateValidation.class}) User user,
-                             BindingResult bindingResult,
-                             Model model) {
+                             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "add-user-form";
         }
@@ -63,14 +60,6 @@ public class AdminController {
         User persistedUser = userService.findById(user.getId());
         persistedUser.merge(user);
         userService.save(persistedUser);
-
-//        try {
-//            userService.save(persistedUser);
-//        } catch (Exception ex) {
-//            System.out.println(ex.getMessage());
-//            model.addAttribute("user", persistedUser);
-//            return "add-user-form";
-//        }
 
         return "redirect:/admin";
     }
