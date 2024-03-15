@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.service.security;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,8 +27,7 @@ public class UserService implements UserDetailsService {
         Optional<User> userOptional = userRepository.findByUsername(username);
 
         if (userOptional.isPresent()) {
-//            Hibernate.initialize(userOptional.get().getRoles());      --- не работает, ошибка ленивой инициализации ролей
-            System.out.println(userOptional.get().getRoles());        //--- тут явно вызываю роли чтоб они инициализировались, как это делать неявно хз пока
+            Hibernate.initialize(userOptional.get().getRoles().getRoles());
 
             return userOptional.get();
         } else {

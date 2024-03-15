@@ -2,6 +2,8 @@ package ru.kata.spring.boot_security.demo.model.entity;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.kata.spring.boot_security.demo.model.entity.validation.CreateValidation;
+import ru.kata.spring.boot_security.demo.model.entity.validation.UpdateValidation;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,28 +21,28 @@ import java.util.Collection;
 
 @Entity
 public class User implements UserDetails {
-    @OneToOne(cascade = CascadeType.ALL)
-    Roles roles;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Email
+    @OneToOne(cascade = CascadeType.ALL)
+    Roles roles;
+    @NotEmpty(groups = {CreateValidation.class}, message = "Email should be not empty")
+    @Email(groups = {CreateValidation.class, UpdateValidation.class})
     @Column(unique = true, nullable = false)
-    @NotEmpty(message = "Username should be not empty")
-    @Size(min = 3, max = 20, message = "Username should be in range 3 and 20 characters")
+    @Size(min = 3, max = 20, message = "Email should be in range 3 and 20 characters")
     private String username;
-    @NotEmpty(message = "Password should be not empty")
+    @NotEmpty(groups = {CreateValidation.class}, message = "Password should be not empty")
     @Column(columnDefinition = "TEXT")
     private String password;
-    @NotEmpty(message = "First name should be not empty")
-    @Pattern(regexp = "[A-Za-z]+", message = "Should be valid first name")
-    @Size(min = 2, max = 20, message = "Firstname should be in range 2 and 20 characters")
+    @NotEmpty(groups = {CreateValidation.class}, message = "First name should be not empty")
+    @Pattern(groups = {CreateValidation.class, UpdateValidation.class}, regexp = "[A-Za-z]+", message = "Should be valid first name")
+    @Size(groups = {CreateValidation.class, UpdateValidation.class}, min = 2, max = 20, message = "Firstname should be in range 2 and 20 characters")
     private String firstName;
-    @NotEmpty(message = "Last name should be not empty")
-    @Pattern(regexp = "[A-Za-z]+", message = "Should be valid last name")
-    @Size(min = 2, max = 20, message = "Last name should be in range 2 and 20 characters")
+    @NotEmpty(groups = {CreateValidation.class}, message = "Last name should be not empty")
+    @Pattern(groups = {CreateValidation.class, UpdateValidation.class}, regexp = "[A-Za-z]+", message = "Should be valid last name")
+    @Size(groups = {CreateValidation.class, UpdateValidation.class}, min = 2, max = 20, message = "Last name should be in range 2 and 20 characters")
     private String lastName;
-    @NotNull
+    @NotNull(groups = {CreateValidation.class}, message = "Age should not be empty")
     private Integer age;
 
 
@@ -155,10 +157,21 @@ public class User implements UserDetails {
     }
 
     public void merge(User user) {
-        this.setFirstName(user.getFirstName());
-        this.setLastName(user.getLastName());
-        this.setAge(user.getAge());
-        this.setUsername(user.getUsername());
+        if (!user.getFirstName().isEmpty()) {
+            this.setFirstName(user.getFirstName());
+        }
+
+        if (!user.getLastName().isEmpty()) {
+            this.setLastName(user.getLastName());
+        }
+
+        if (user.getAge() != null) {
+            this.setAge(user.getAge());
+        }
+
+        if (!user.getUsername().isEmpty()) {
+            this.setUsername(user.getUsername());
+        }
 
         if (!user.getRoles().getRoles().isEmpty()) {
             this.setRoles(user.getRoles());

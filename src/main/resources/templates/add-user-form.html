@@ -61,8 +61,7 @@
                 <input class="form-control" id="email" name="email" th:field="*{username}" type="text">
                 </p>
                 <p class="">
-                <div class="alert alert-danger" th:errors="*{password}" th:if="${#fields.hasErrors('password')}">Error
-                </div>
+                <div class="alert alert-danger" th:errors="*{password}" th:if="${#fields.hasErrors('password')}">Error</div>
                 <label class="font-weight-bold text-center w-100" for="password">Password</label>
                 <input class="form-control" id="password" name="password" th:field="*{password}" type="password">
                 </p>
@@ -70,7 +69,7 @@
                     <label class="font-weight-bold text-center w-100" for="roles">Roles</label>
                     <select class="form-control h-3" id="roles" multiple name="roles" style="height: 60px"
                             th:field="*{roles.roles}">
-                        <option th:selected="${role}" th:each="role : ${roles}" th:text="${role.getView()}" th:value="${role}"></option>
+                        <option selected th:selected="${role}" th:each="role : ${roles}" th:text="${role.getView()}" th:value="${role}"></option>
                     </select>
                 </p>
                 <input class="btn btn-success mx-auto d-block" type="submit" value="Add new user">

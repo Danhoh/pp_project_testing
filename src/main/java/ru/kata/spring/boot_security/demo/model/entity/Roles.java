@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ public class Roles {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotEmpty(message = "!!!!")
     @NotNull
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"))
