@@ -7,6 +7,7 @@ console.log("addUserForm");
 
     submitBtn.addEventListener("click", e => {
         e.preventDefault();
+        hideAllErrors(addUserForm);
         let submitObj = {
             firstName: formInputs[0].value,
             lastName: formInputs[1].value,
@@ -35,5 +36,6 @@ console.log("addUserForm");
                     hideAllErrors();
                 }
             })
+
     });
 })();

@@ -8,6 +8,8 @@ import ru.kata.spring.boot_security.demo.model.entity.validation.UpdateValidatio
 
 import javax.persistence.Column;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -22,17 +24,19 @@ public class CreateUserDto {
     @Size(min = 3, max = 20, message = "Email should be in range 3 and 20 characters")
     private String username;
     @NotEmpty(groups = {CreateValidation.class}, message = "Password should be not empty")
-    @Column(columnDefinition = "TEXT")
+    @Min(value = 3, message = "Password should be bigger then 2")
     private String password;
     @NotEmpty(groups = {CreateValidation.class}, message = "First name should be not empty")
     @Pattern(groups = {CreateValidation.class, UpdateValidation.class}, regexp = "[A-Za-z]+", message = "Should be valid first name")
     @Size(groups = {CreateValidation.class, UpdateValidation.class}, min = 2, max = 20, message = "Firstname should be in range 2 and 20 characters")
     private String firstName;
     @NotEmpty(groups = {CreateValidation.class}, message = "Last name should be not empty")
-    @Pattern(groups = {CreateValidation.class, UpdateValidation.class}, regexp = "[A-Za-z]+", message = "Should be valid last name")
-    @Size(groups = {CreateValidation.class, UpdateValidation.class}, min = 2, max = 20, message = "Last name should be in range 2 and 20 characters")
+    @Pattern(groups = {CreateValidation.class}, regexp = "[A-Za-z]+", message = "Should be valid last name")
+    @Size(groups = {CreateValidation.class}, min = 2, max = 20, message = "Last name should be in range 2 and 20 characters")
     private String lastName;
     @NotNull(groups = {CreateValidation.class}, message = "Age should not be empty")
+    @Min(value = 10, message = "Should be greater then 9")
+    @Max(value = 99, message = "Should be less then 100")
     private Integer age;
     private List<String> roles;
 
