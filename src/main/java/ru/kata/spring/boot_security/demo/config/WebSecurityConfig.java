@@ -17,7 +17,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import ru.kata.spring.boot_security.demo.service.security.UserService;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     //****************************************************************
     // Я добавил 2 источника - dao provider и in-memory
@@ -48,21 +48,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/")
-                .permitAll()
-                .antMatchers("/admin/**")
+                .antMatchers("/**/admin/**")
                 .hasRole("ADMIN")
-                .antMatchers("/user")
-                .hasAnyRole("ADMIN", "USER")
                 .anyRequest()
                 .authenticated()
                 .and()
                 .formLogin()
-                .successHandler(successUserHandler)
                 .permitAll()
                 .and()
                 .logout()
-                .permitAll();
+                .permitAll()
+                .and()
+                .cors()
+                .disable()
+                .csrf()
+                .disable();
     }
 
     @Bean

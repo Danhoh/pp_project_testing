@@ -23,7 +23,6 @@ public class Roles {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotEmpty(message = "!!!!")
     @NotNull
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"))

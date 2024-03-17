@@ -2,6 +2,7 @@ package ru.kata.spring.boot_security.demo.model.entity;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.kata.spring.boot_security.demo.dto.UpdateUserDto;
 import ru.kata.spring.boot_security.demo.model.entity.validation.CreateValidation;
 import ru.kata.spring.boot_security.demo.model.entity.validation.UpdateValidation;
 
@@ -18,6 +19,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Entity
 public class User implements UserDetails {
@@ -52,13 +54,17 @@ public class User implements UserDetails {
 
     public User(
             String username,
+            String password,
             String firstName,
             String lastName,
+            Integer age,
             Roles roles
     ) {
         this.username = username;
+        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.age = age;
         this.roles = roles;
     }
 
@@ -179,6 +185,37 @@ public class User implements UserDetails {
 
         if (!user.getPassword().isEmpty()) {
             this.setPassword(user.getPassword());
+        }
+    }
+
+    public void merge(UpdateUserDto updateUserDto) {
+        if (!updateUserDto.getFirstName().isEmpty()) {
+            this.setFirstName(updateUserDto.getFirstName());
+        }
+
+        if (!updateUserDto.getLastName().isEmpty()) {
+            this.setLastName(updateUserDto.getLastName());
+        }
+
+        if (updateUserDto.getAge() != null) {
+            this.setAge(updateUserDto.getAge());
+        }
+
+        if (!updateUserDto.getUsername().isEmpty()) {
+            this.setUsername(updateUserDto.getUsername());
+        }
+
+        if (!updateUserDto.getRoles().isEmpty()) {
+            this.setRoles(
+                    new Roles(updateUserDto.getRoles()
+                            .stream()
+                            .map(Role::valueOf)
+                            .collect(Collectors.toList()))
+            );
+        }
+
+        if (!updateUserDto.getPassword().isEmpty()) {
+            this.setPassword(updateUserDto.getPassword());
         }
     }
 }

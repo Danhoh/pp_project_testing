@@ -11,7 +11,6 @@ import ru.kata.spring.boot_security.demo.model.entity.User;
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/user").setViewName("user");
         registry.addViewController("/").setViewName("index");
     }
 
@@ -22,6 +21,8 @@ public class MvcConfig implements WebMvcConfigurer {
                 "ADMIN",
                 "ADMIN",
                 "ADMIN",
+                "ADMIN",
+                11,
                 new Roles(Role.ROLE_ADMIN)
         );
     }
