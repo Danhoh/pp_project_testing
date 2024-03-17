@@ -5,7 +5,6 @@ console.log("deleteUser");
     let deleteForm = document.querySelector("#delete-new-user-form");
 
     deleteBtn.addEventListener("click", e => {
-        // e.preventDefault();
         e.preventDefault();
         let id = deleteForm.querySelector("#delete-hidden-input").value;
 

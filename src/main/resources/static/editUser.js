@@ -21,17 +21,26 @@ console.log("edit");
                 .filter(e => e.selected)
                 .map(e => e.value)
         }
-        console.log(sendObj);
         sendData(
             "http://localhost:8080/api/v1/admin/user",
             "PUT",
             sendObj
         )
-            .then(resp => {
-                loadUsers().then(data => fillTable(usersTbodyElem, tableRowElementTemplate, data))
-                    .then(() => {
-                        document.querySelector("#close-edit-modal-btn").click();
-                    })
+            .then(errors => {
+                if (errors) {
+                    executeErrorsFormFill(document.querySelector("#edit-new-user-form"), errors);
+                } else {
+                    loadUsers().then(data => fillTable(usersTbodyElem, tableRowElementTemplate, data))
+                        .then(() => {
+                            initFormAutoFill();
+                            document.querySelector("#close-edit-modal-btn").click();
+                            hideAllErrors(document.querySelector("#edit-new-user-form"));
+                        })
+                }
             })
     })
+
+    document.querySelector("#edit-user-close-btn").addEventListener("click", e => {
+        hideAllErrors(document.querySelector("#edit-new-user-form"));
+    });
 })();

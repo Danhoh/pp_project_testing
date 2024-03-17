@@ -14,9 +14,9 @@ console.log("tabsHandle");
     let userTableElem = document.querySelector("#user-table");
 
 
-    userTableBtn.onclick  = e => {
+    userTableBtn.onclick = e => {
         e.preventDefault();
-        pageHeadingElem.innerHTML="All users";
+        pageHeadingElem.innerHTML = "All users";
 
         newUserFormElem.setAttribute("class", ADD_USER_FORM_CLASS_HIDDEN);
         userTableElem.setAttribute("class", USER_TABLE_CLASS_SHOWN);
@@ -25,9 +25,9 @@ console.log("tabsHandle");
         newUserBtn.setAttribute('class', 'nav-link');
     };
 
-    newUserBtn.onclick  = e => {
+    newUserBtn.onclick = e => {
         e.preventDefault();
-        pageHeadingElem.innerHTML="Add new user";
+        pageHeadingElem.innerHTML = "Add new user";
 
         newUserFormElem.setAttribute("class", ADD_USER_FORM_CLASS_SHOWN);
         userTableElem.setAttribute("class", USER_TABLE_CLASS_HIDDEN);

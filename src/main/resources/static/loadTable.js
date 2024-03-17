@@ -87,7 +87,7 @@ async function fillRowWithData(row, data) {
 }
 
 async function fillTable(tbody, template, usersData) {
-    tbody.innerHTML=""; // delete all inner content in table before filling
+    tbody.innerHTML = ""; // delete all inner content in table before filling
 
     usersData.forEach(data => {
         let row = createTableRowElem(template);
@@ -98,8 +98,8 @@ async function fillTable(tbody, template, usersData) {
 
 (() => {
     // init data in both tables
-    loadUsers().then(data => fillTable(usersTbodyElem, tableRowElementTemplate,data).then(() => initFormAutoFill()));
-    loadPrincipal().then(data => fillTable(principalTbodyElem, principleTableRowElementTemplate,data));
+    loadUsers().then(data => fillTable(usersTbodyElem, tableRowElementTemplate, data).then(() => initFormAutoFill()));
+    loadPrincipal().then(data => fillTable(principalTbodyElem, principleTableRowElementTemplate, data));
 
     let adminSideBtn = document.querySelector("#admin-side-btn");
     let userSideBtn = document.querySelector("#user-side-btn");

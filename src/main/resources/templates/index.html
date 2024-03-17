@@ -9,18 +9,19 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <!--    this is to spring app-->
-    <script src="/global.js" defer></script>
-    <script src="/loadTable.js" defer></script>
-    <script src="/sideButtons.js" defer></script>
-    <script src="/headings.js" defer></script>
-    <script src="/tabsVisability.js" defer></script>
-    <script src="/navPrincipalInfo.js" defer></script>
-    <script src="/addUserForm.js" defer></script>
-    <script src="/tabsHandle.js" defer></script>
-    <script src="/formAutofill.js" defer></script>
-    <script src="/deleteUser.js" defer></script>
-    <script src="/editUser.js" defer></script>
-    <script src="/viewOfRole.js" defer></script>
+    <script defer src="/global.js"></script>
+    <script defer src="/loadTable.js"></script>
+    <script defer src="/sideButtons.js"></script>
+    <script defer src="/headings.js"></script>
+    <script defer src="/tabsVisability.js"></script>
+    <script defer src="/navPrincipalInfo.js"></script>
+    <script defer src="/addUserForm.js"></script>
+    <script defer src="/tabsHandle.js"></script>
+    <script defer src="/formAutofill.js"></script>
+    <script defer src="/deleteUser.js"></script>
+    <script defer src="/editUser.js"></script>
+    <script defer src="/viewOfRole.js"></script>
+    <script defer src="/errorsFormFill.js"></script>
 
     <!--        this is to dev-->
     <!--    <script src="../static/tabsHandle.js" defer></script>-->
@@ -40,7 +41,7 @@
     <nav class="navbar navbar-dark bg-dark">
         <div class="">
             <p class="text-white mb-0">
-                <span id="nav-info-username" class="bold">undefined</span> with roles: <span id="nav-info-roles">undefined</span>
+                <span class="bold" id="nav-info-username">undefined</span> with roles: <span id="nav-info-roles">undefined</span>
             </p>
         </div>
         <ul class="navbar-nav">
@@ -50,10 +51,10 @@
 </header>
 <div class="container-fluid row w-100 h-100 mt-4">
     <aside class="col-2 bg-white ml-0 px-0">
-        <a id="admin-side-btn" class="btn btn-primary w-100 text-left side-button" href="#">Admin</a>
-        <a id="user-side-btn" class="btn w-100 text-left side-button" href="#">User</a>
+        <a class="btn btn-primary w-100 text-left side-button" href="#" id="admin-side-btn">Admin</a>
+        <a class="btn w-100 text-left side-button" href="#" id="user-side-btn">User</a>
     </aside>
-    <section id="main-container" class="col-10">
+    <section class="col-10" id="main-container">
         <h1>Admin panel</h1>
         <div>
             <ul class="nav nav-tabs">
@@ -99,34 +100,29 @@
 
                 </tbody>
             </table>
-            <form class="col-4 mx-auto d-none" id="new-user-form" action="#" method="post">
+            <form action="#" class="col-4 mx-auto d-none" id="new-user-form" method="post">
                 <p class="">
-                <div class="alert alert-danger d-none">
-                    Error
-                </div>
+                <div class="alert alert-danger d-none" id="firstName-error"></div>
                 <label class="font-weight-bold text-center w-100" for="firstName">First name</label>
                 <input class="form-control" id="firstName" name="firstName" type="text">
                 </p>
                 <p class="">
-                <div class="alert alert-danger d-none">Error
-                </div>
+                <div class="alert alert-danger d-none" id="lastName-error"></div>
                 <label class="font-weight-bold text-center w-100" for="lastName">Last name</label>
                 <input class="form-control" id="lastName" name="lastName" type="text">
                 </p>
                 <p class="">
-                <div class="alert alert-danger d-none">Error</div>
+                <div class="alert alert-danger d-none" id="age-error"></div>
                 <label class="font-weight-bold text-center w-100" for="age">Age</label>
                 <input class="form-control" id="age" name="age" type="text">
                 </p>
                 <p class="">
-                <div class="alert alert-danger d-none">Error
-                </div>
+                <div class="alert alert-danger d-none" id="username-error"></div>
                 <label class="font-weight-bold text-center w-100" for="email">Email</label>
                 <input class="form-control" id="email" name="email" type="text">
                 </p>
                 <p class="">
-                <div class="alert alert-danger d-none">Error
-                </div>
+                <div class="alert alert-danger d-none" id="password-error"></div>
                 <label class="font-weight-bold text-center w-100" for="password">Password</label>
                 <input class="form-control" id="password" name="password" type="password">
                 </p>
@@ -137,7 +133,7 @@
                         <option selected value="ROLE_ADMIN">ADMIN</option>
                     </select>
                 </p>
-                <input id="submit-new-user-form-btn" class="btn btn-success mx-auto d-block" type="submit"
+                <input class="btn btn-success mx-auto d-block" id="submit-new-user-form-btn" type="submit"
                        value="Add new user">
             </form>
         </div>
@@ -149,12 +145,12 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="deleteModalLabel">Delete user</h5>
-                <button id="close-delete-modal-btn" aria-label="Close" class="close" data-dismiss="modal" type="button">
+                <button aria-label="Close" class="close" data-dismiss="modal" id="close-delete-modal-btn" type="button">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form class="col-6 mx-auto" id="delete-new-user-form" action="#" method="post">
+                <form action="#" class="col-6 mx-auto" id="delete-new-user-form" method="post">
                     <p class="">
                         <label class="font-weight-bold text-center w-100" for="delete-firstName">First name</label>
                         <input class="form-control" disabled id="delete-firstName" name="firstName" type="text">
@@ -179,7 +175,7 @@
                             <option>Admin</option>
                         </select>
                     </p>
-                    <input id="delete-hidden-input" class="form-control" style="display: none" name="id" type="text">
+                    <input class="form-control" id="delete-hidden-input" name="id" style="display: none" type="text">
                 </form>
             </div>
             <div class="modal-footer">
@@ -194,44 +190,49 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editModalLabel">Edit user</h5>
-                <button id="close-edit-modal-btn" aria-label="Close" class="close" data-dismiss="modal" type="button">
+                <button aria-label="Close" class="close" data-dismiss="modal" id="close-edit-modal-btn" type="button">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form class="col-6 mx-auto" id="edit-new-user-form" action="#" method="post">
+                <form action="#" class="col-6 mx-auto" id="edit-new-user-form" method="post">
                     <p class="">
                         <label class="font-weight-bold text-center w-100" for="edit-id">ID</label>
                         <input class="form-control" disabled id="edit-id" type="text">
                     </p>
                     <p class="">
-                        <label class="font-weight-bold text-center w-100" for="edit-firstName">First name</label>
-                        <input class="form-control" id="edit-firstName" name="firstName"
-                               type="text">
+                    <div class="alert alert-danger d-none" id="firstName-error-edit"></div>
+                    <label class="font-weight-bold text-center w-100" for="edit-firstName">First name</label>
+                    <input class="form-control" id="edit-firstName" name="firstName"
+                           type="text">
                     </p>
                     <p class="">
-                        <label class="font-weight-bold text-center w-100" for="edit-lastName">Last name</label>
-                        <input class="form-control" id="edit-lastName" name="lastName"
-                               type="text">
+                    <div class="alert alert-danger d-none" id="lastName-error-edit"></div>
+                    <label class="font-weight-bold text-center w-100" for="edit-lastName">Last name</label>
+                    <input class="form-control" id="edit-lastName" name="lastName"
+                           type="text">
                     </p>
                     <p class="">
-                        <label class="font-weight-bold text-center w-100" for="edit-age">Age</label>
-                        <input class="form-control" id="edit-age" max="100" min="1" name="age"
-                               type="number">
+                    <div class="alert alert-danger d-none" id="age-error-edit"></div>
+                    <label class="font-weight-bold text-center w-100" for="edit-age">Age</label>
+                    <input class="form-control" id="edit-age" max="100" min="1" name="age"
+                           type="number">
                     </p>
                     <p class="">
-                        <label class="font-weight-bold text-center w-100" for="edit-email">Email</label>
-                        <input class="form-control" id="edit-email" name="username"
-                               type="text">
+                    <div class="alert alert-danger d-none" id="username-error-edit"></div>
+                    <label class="font-weight-bold text-center w-100" for="edit-email">Email</label>
+                    <input class="form-control" id="edit-email" name="username"
+                           type="text">
                     </p>
                     <p class="">
-                        <label class="font-weight-bold text-center w-100" for="edit-password">Password</label>
-                        <input autocomplete="off" class="form-control" id="edit-password" name="password"
-                               type="password">
+                    <div class="alert alert-danger d-none" id="password-error-edit"></div>
+                    <label class="font-weight-bold text-center w-100" for="edit-password">Password</label>
+                    <input autocomplete="off" class="form-control" id="edit-password" name="password"
+                           type="password">
                     </p>
                     <p class="">
                         <label class="font-weight-bold text-center w-100" for="edit-role">Role</label>
-                        <select class="form-control h-3" id="edit-role" multiple style="height: 60px" name="roles">
+                        <select class="form-control h-3" id="edit-role" multiple name="roles" style="height: 60px">
                             <option value="ROLE_USER">USER</option>
                             <option value="ROLE_ADMIN">ADMIN</option>
                         </select>
@@ -239,7 +240,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+                <button class="btn btn-secondary" data-dismiss="modal" id="edit-user-close-btn" type="button">Close
+                </button>
                 <button class="btn btn-primary" id="edit-submit-btn" type="button">Edit</button>
             </div>
         </div>

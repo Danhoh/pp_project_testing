@@ -7,7 +7,6 @@ console.log("addUserForm");
 
     submitBtn.addEventListener("click", e => {
         e.preventDefault();
-        console.log(formInputs);
         let submitObj = {
             firstName: formInputs[0].value,
             lastName: formInputs[1].value,
@@ -21,16 +20,20 @@ console.log("addUserForm");
                 .map(e => e.value)
         }
 
-        console.log(submitObj);
         sendData(
             "http://localhost:8080/api/v1/admin/user/add",
             "POST",
             submitObj
         )
             .then(resp => {
-                loadUsers().then(data => fillTable(usersTbodyElem, tableRowElementTemplate, data));
-                document.querySelector("#user-table-btn").click();
-                formInputs.forEach(e => e.value = "");
+                if (resp) {
+                    executeErrorsFormFill(document.querySelector("#new-user-form"), resp);
+                } else {
+                    loadUsers().then(data => fillTable(usersTbodyElem, tableRowElementTemplate, data));
+                    document.querySelector("#user-table-btn").click();
+                    formInputs.forEach(e => e.value = "");
+                    hideAllErrors();
+                }
             })
     });
 })();

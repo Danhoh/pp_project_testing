@@ -1,6 +1,6 @@
 console.log("global");
 
-async function sendData(url = '', method="POST", data = {}){
+async function sendData(url = '', method = "POST", data = {}) {
     try {
         const response = await fetch(url, {
             method: method,
@@ -11,12 +11,14 @@ async function sendData(url = '', method="POST", data = {}){
         });
 
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            let error = new Error('Network response was not ok');
+            error.data = await response.json();
+            throw error;
         }
 
-        const jsonResponse = await response.json();
-        return jsonResponse;
+        return await response.json();
     } catch (error) {
-        console.error('Error:', error);
+        // console.error(error.data);
+        return error.data;
     }
 }

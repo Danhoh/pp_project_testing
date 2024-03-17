@@ -2,6 +2,8 @@ package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +16,7 @@ import ru.kata.spring.boot_security.demo.dto.CreateUserDto;
 import ru.kata.spring.boot_security.demo.dto.ReadUserDto;
 import ru.kata.spring.boot_security.demo.dto.UpdateUserDto;
 import ru.kata.spring.boot_security.demo.model.entity.User;
+import ru.kata.spring.boot_security.demo.model.entity.validation.CreateValidation;
 import ru.kata.spring.boot_security.demo.service.data.UserService;
 
 import javax.persistence.EntityNotFoundException;
@@ -40,13 +43,14 @@ public class AdminController {
     }
 
     @PostMapping("/user/add")
-    public ResponseEntity<String> addUser(@RequestBody CreateUserDto createUserDto) {
-        try {
-            userService.save(createUserDto.createUser());
-            return ResponseEntity.ok("User saved");
-        } catch (Exception ex) {
-            return ResponseEntity.badRequest().body("Incorrect data");
+    public ResponseEntity<?> addUser(@Validated({CreateValidation.class}) @RequestBody CreateUserDto createUserDto,
+                                     BindingResult result) {
+        if (result.hasErrors()) {
+            System.out.println(result.getAllErrors());
+            return ResponseEntity.badRequest().body(result.getAllErrors());
         }
+        userService.save(createUserDto.createUser());
+        return ResponseEntity.ok("User saved");
     }
 
     @DeleteMapping("/user/{id}")
@@ -60,7 +64,12 @@ public class AdminController {
     }
 
     @PutMapping("/user")
-    ResponseEntity<String> updateUser(@RequestBody UpdateUserDto updateUserDto) {
+    ResponseEntity<?> updateUser(@Validated @RequestBody UpdateUserDto updateUserDto,
+                                 BindingResult result) {
+        if (result.hasErrors()) {
+            System.out.println(result.getAllErrors());
+            return ResponseEntity.badRequest().body(result.getAllErrors());
+        }
         try {
             User user = userService.findById(updateUserDto.getId());
             user.merge(updateUserDto);

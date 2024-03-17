@@ -17,7 +17,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import ru.kata.spring.boot_security.demo.service.security.UserService;
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     //****************************************************************
     // Я добавил 2 источника - dao provider и in-memory
@@ -27,15 +27,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     // чтобы можно было войти
     // и начать тестировать программу
     //****************************************************************
-    private final SuccessUserHandler successUserHandler;
     private final UserService userService;
 
     @Autowired
-    public WebSecurityConfig(SuccessUserHandler successUserHandler,
-                             UserService userService
+    public WebSecurityConfig(
+            UserService userService
     ) {
         this.userService = userService;
-        this.successUserHandler = successUserHandler;
     }
 
     @Override
