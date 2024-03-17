@@ -23,6 +23,8 @@ console.log("tabsHandle");
 
         userTableBtn.setAttribute('class', 'nav-link active');
         newUserBtn.setAttribute('class', 'nav-link');
+
+        hideAllErrors(document.querySelector("#new-user-form"));
     };
 
     newUserBtn.onclick = e => {
