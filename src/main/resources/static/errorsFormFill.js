@@ -19,7 +19,7 @@ function executeErrorsFormFill(form = null, errors = null) {
 }
 
 function hideAllErrors(form) {
-    let errorElems = document.querySelectorAll(".alert-danger");
+    let errorElems = form.querySelectorAll(".alert-danger");
     errorElems.forEach(elem => {
         let className = elem.getAttribute("class");
         if (!className.includes("d-none")) {
