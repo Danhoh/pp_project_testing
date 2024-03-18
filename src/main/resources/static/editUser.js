@@ -43,4 +43,8 @@ console.log("edit");
     document.querySelector("#edit-user-close-btn").addEventListener("click", e => {
         hideAllErrors(document.querySelector("#edit-new-user-form"));
     });
+
+    document.querySelector("#edit-modal").addEventListener("click", e => {
+        hideAllErrors(document.querySelector("#edit-new-user-form"));
+    });
 })();
