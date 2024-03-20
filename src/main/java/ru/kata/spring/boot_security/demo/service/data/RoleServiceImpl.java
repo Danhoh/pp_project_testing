@@ -7,14 +7,13 @@ import ru.kata.spring.boot_security.demo.model.enums.RoleEnum;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class RoleServiceImpl implements RoleService {
-    RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
     @Autowired
     public RoleServiceImpl(RoleRepository roleRepository) {

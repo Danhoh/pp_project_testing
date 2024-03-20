@@ -9,6 +9,7 @@ import ru.kata.spring.boot_security.demo.service.data.RoleService;
 import ru.kata.spring.boot_security.demo.service.data.UserService;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 @Configuration
 public class CreateDropConfig {
@@ -22,12 +23,13 @@ public class CreateDropConfig {
     }
 
     @PostConstruct
-    void init() {
+    protected void init() {
         for (RoleEnum roleEnum : RoleEnum.values()) {
             roleService.save(new Role(roleEnum));
         }
-
         userService.save(new User("admin", "admin", "admin", "admin", 11,
-               roleService.getAllRoles()));
+                roleService.getAllRoles()));
+        userService.save(new User("user", "user", "user", "user", 11,
+                List.of(roleService.findRoleByName(RoleEnum.ROLE_USER))));
     }
 }

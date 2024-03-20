@@ -16,7 +16,6 @@ import ru.kata.spring.boot_security.demo.dto.CreateUserDto;
 import ru.kata.spring.boot_security.demo.dto.ReadUserDto;
 import ru.kata.spring.boot_security.demo.dto.UpdateUserDto;
 import ru.kata.spring.boot_security.demo.dto.validation.CreateValidation;
-import ru.kata.spring.boot_security.demo.model.entities.Role;
 import ru.kata.spring.boot_security.demo.model.entities.User;
 import ru.kata.spring.boot_security.demo.service.data.RoleService;
 import ru.kata.spring.boot_security.demo.service.data.UserService;
@@ -47,7 +46,6 @@ public class AdminController {
         if (result.hasErrors()) {
             return ResponseEntity.badRequest().body(result.getAllErrors());
         }
-        System.out.println(createUserDto);
         userService.save(userService.createUserFromDto(createUserDto));
         return ResponseEntity.ok("User saved");
     }
@@ -67,19 +65,17 @@ public class AdminController {
         if (result.hasErrors()) {
             return ResponseEntity.badRequest().body(result.getAllErrors());
         }
-
         try {
             User user = userService.findById(updateUserDto.getId());
             userService.merge(user, userService.createUserFromDto(updateUserDto));
             return ResponseEntity.ok("ok");
-
         } catch (EntityNotFoundException ex) {
             return ResponseEntity.badRequest().body("Incorrect data");
         }
     }
 
     @GetMapping("/roles")
-    List<String>  getRoles() {
+    private List<String> getRoles() {
         return roleService.getAllRoles().stream().map(role -> role.getName().name()).collect(Collectors.toList());
     }
 }

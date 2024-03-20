@@ -27,13 +27,13 @@
     }
 
     loadRoles()
-         .then(roles => {
-             let editUserRolesElem = document.querySelector("#edit-role");
-             let addUserRolesElem = document.querySelector("#roles");
-             let deleteUserRolesElem = document.querySelector("#delete-role");
+        .then(roles => {
+            let editUserRolesElem = document.querySelector("#edit-role");
+            let addUserRolesElem = document.querySelector("#roles");
+            let deleteUserRolesElem = document.querySelector("#delete-role");
 
-             fillRoleSelect(editUserRolesElem, roles);
-             fillRoleSelect(addUserRolesElem, roles);
-             fillRoleSelect(deleteUserRolesElem, roles);
-         })
+            fillRoleSelect(editUserRolesElem, roles);
+            fillRoleSelect(addUserRolesElem, roles);
+            fillRoleSelect(deleteUserRolesElem, roles);
+        })
 })();

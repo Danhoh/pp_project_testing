@@ -3,33 +3,25 @@ package ru.kata.spring.boot_security.demo.model.entities;
 import org.springframework.security.core.GrantedAuthority;
 import ru.kata.spring.boot_security.demo.model.enums.RoleEnum;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
-public class Role  implements GrantedAuthority {
+public class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Enumerated(EnumType.STRING)
     private RoleEnum name;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "roles")
     private List<User> users;
 
     public Role() {
