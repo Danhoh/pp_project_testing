@@ -18,7 +18,6 @@ async function sendData(url = '', method = "POST", data = {}) {
 
         return await response.json();
     } catch (error) {
-        // console.error(error.data);
         return error.data;
     }
 }

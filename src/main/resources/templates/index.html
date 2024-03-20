@@ -22,12 +22,8 @@
     <script defer src="/editUser.js"></script>
     <script defer src="/viewOfRole.js"></script>
     <script defer src="/errorsFormFill.js"></script>
+    <script defer src="/getRoles.js"></script>
 
-    <!--        this is to dev-->
-    <!--    <script src="../static/tabsHandle.js" defer></script>-->
-    <!--    <script src="../static/formAutofill.js" defer></script>-->
-    <!--    <script src="../static/sideButtons.js" defer></script>-->
-    <!--    <script src="../static/loadTable.js" defer></script>-->
     <style>
         html, body {
             height: 100%;
@@ -129,8 +125,7 @@
                 <p class="">
                     <label class="font-weight-bold text-center w-100" for="roles">Roles</label>
                     <select class="form-control h-3" id="roles" multiple name="roles" style="height: 60px">
-                        <option selected value="ROLE_USER">USER</option>
-                        <option selected value="ROLE_ADMIN">ADMIN</option>
+
                     </select>
                 </p>
                 <input class="btn btn-success mx-auto d-block" id="submit-new-user-form-btn" type="submit"
@@ -171,8 +166,7 @@
                         <label class="font-weight-bold text-center w-100" for="delete-role">Role</label>
                         <select class="form-control h-3" disabled id="delete-role" multiple name="role"
                                 style="height: 60px">
-                            <option>User</option>
-                            <option>Admin</option>
+
                         </select>
                     </p>
                     <input class="form-control" id="delete-hidden-input" name="id" style="display: none" type="text">
@@ -233,8 +227,7 @@
                     <p class="">
                         <label class="font-weight-bold text-center w-100" for="edit-role">Role</label>
                         <select class="form-control h-3" id="edit-role" multiple name="roles" style="height: 60px">
-                            <option value="ROLE_USER">USER</option>
-                            <option value="ROLE_ADMIN">ADMIN</option>
+
                         </select>
                     </p>
                 </form>

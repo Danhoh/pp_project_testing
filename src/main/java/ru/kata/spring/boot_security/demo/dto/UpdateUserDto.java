@@ -1,8 +1,8 @@
 package ru.kata.spring.boot_security.demo.dto;
 
-import ru.kata.spring.boot_security.demo.model.entity.Role;
-import ru.kata.spring.boot_security.demo.model.entity.Roles;
-import ru.kata.spring.boot_security.demo.model.entity.User;
+import ru.kata.spring.boot_security.demo.model.entities.Role;
+import ru.kata.spring.boot_security.demo.model.entities.User;
+import ru.kata.spring.boot_security.demo.model.enums.RoleEnum;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class UpdateUserDto {
+public class UpdateUserDto implements UserDto {
     private Long id;
     @Email
     @Size(min = 3, max = 20, message = "Email should be in range 3 and 20 characters")
@@ -37,39 +37,34 @@ public class UpdateUserDto {
         this.id = id;
     }
 
+    @Override
     public String getUsername() {
         return username;
     }
 
+    @Override
     public String getPassword() {
         return password;
     }
 
+    @Override
     public String getFirstName() {
         return firstName;
     }
 
+    @Override
     public String getLastName() {
         return lastName;
     }
 
+    @Override
     public Integer getAge() {
         return age;
     }
 
+    @Override
     public List<String> getRoles() {
         return roles;
-    }
-
-    public User createUser() {
-        return new User(
-                getUsername(),
-                getPassword(),
-                getFirstName(),
-                getLastName(),
-                getAge(),
-                new Roles(getRoles().stream().map(Role::valueOf).collect(Collectors.toList()))
-        );
     }
 
     @Override

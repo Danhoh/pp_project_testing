@@ -1,15 +1,17 @@
 package ru.kata.spring.boot_security.demo.dto;
 
-import ru.kata.spring.boot_security.demo.model.entity.Role;
-import ru.kata.spring.boot_security.demo.model.entity.User;
+import ru.kata.spring.boot_security.demo.model.entities.User;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ReadUserDto {
+public class ReadUserDto implements UserDto {
     private final long id;
+
     private final String username;
+
     private final String firstName;
+
     private final String lastName;
 
     private final Integer age;
@@ -22,32 +24,39 @@ public class ReadUserDto {
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.age = user.getAge();
-        this.roles = user.getRoles().getRoles()
-                .stream()
-                .map(Role::getView)
-                .collect(Collectors.toList());
+        this.roles = user.getRoles().stream().map(role -> role.getName().getView()).collect(Collectors.toList());
     }
 
     public long getId() {
         return id;
     }
 
+    @Override
     public String getUsername() {
         return username;
     }
 
+    @Override
+    public String getPassword() {
+        return null;
+    }
+
+    @Override
     public String getFirstName() {
         return firstName;
     }
 
+    @Override
     public String getLastName() {
         return lastName;
     }
 
+    @Override
     public Integer getAge() {
         return age;
     }
 
+    @Override
     public List<String> getRoles() {
         return roles;
     }

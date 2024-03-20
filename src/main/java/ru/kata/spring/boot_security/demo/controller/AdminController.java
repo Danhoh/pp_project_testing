@@ -15,12 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.kata.spring.boot_security.demo.dto.CreateUserDto;
 import ru.kata.spring.boot_security.demo.dto.ReadUserDto;
 import ru.kata.spring.boot_security.demo.dto.UpdateUserDto;
-import ru.kata.spring.boot_security.demo.model.entity.User;
-import ru.kata.spring.boot_security.demo.model.entity.validation.CreateValidation;
+import ru.kata.spring.boot_security.demo.dto.validation.CreateValidation;
+import ru.kata.spring.boot_security.demo.model.entities.Role;
+import ru.kata.spring.boot_security.demo.model.entities.User;
+import ru.kata.spring.boot_security.demo.service.data.RoleService;
 import ru.kata.spring.boot_security.demo.service.data.UserService;
 
 import javax.persistence.EntityNotFoundException;
-import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,33 +29,31 @@ import java.util.stream.Collectors;
 @RequestMapping("api/v1/admin")
 public class AdminController {
     private final UserService userService;
+    private final RoleService roleService;
 
     @Autowired
-    public AdminController(UserService userService) {
+    private AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @GetMapping("/user/all")
-    List<ReadUserDto> getAllUsers(Principal principal) {
-        return userService.getAllUsers()
-                .stream()
-                .map(ReadUserDto::new)
-                .collect(Collectors.toList());
+    private List<ReadUserDto> getAllUsers() {
+        return userService.getAllUsers().stream().map(ReadUserDto::new).collect(Collectors.toList());
     }
 
     @PostMapping("/user/add")
-    public ResponseEntity<?> addUser(@Validated({CreateValidation.class}) @RequestBody CreateUserDto createUserDto,
-                                     BindingResult result) {
+    private ResponseEntity<?> addUser(@Validated({CreateValidation.class}) @RequestBody CreateUserDto createUserDto, BindingResult result) {
         if (result.hasErrors()) {
-            System.out.println(result.getAllErrors());
             return ResponseEntity.badRequest().body(result.getAllErrors());
         }
-        userService.save(createUserDto.createUser());
+        System.out.println(createUserDto);
+        userService.save(userService.createUserFromDto(createUserDto));
         return ResponseEntity.ok("User saved");
     }
 
     @DeleteMapping("/user/{id}")
-    ResponseEntity<String> deleteUser(@PathVariable long id) {
+    private ResponseEntity<String> deleteUser(@PathVariable long id) {
         try {
             userService.removeById(id);
             return ResponseEntity.ok("User deleted");
@@ -64,20 +63,23 @@ public class AdminController {
     }
 
     @PutMapping("/user")
-    ResponseEntity<?> updateUser(@Validated @RequestBody UpdateUserDto updateUserDto,
-                                 BindingResult result) {
+    private ResponseEntity<?> updateUser(@Validated @RequestBody UpdateUserDto updateUserDto, BindingResult result) {
         if (result.hasErrors()) {
-            System.out.println(result.getAllErrors());
             return ResponseEntity.badRequest().body(result.getAllErrors());
         }
+
         try {
             User user = userService.findById(updateUserDto.getId());
-            user.merge(updateUserDto);
-            userService.save(user);
+            userService.merge(user, userService.createUserFromDto(updateUserDto));
             return ResponseEntity.ok("ok");
 
         } catch (EntityNotFoundException ex) {
             return ResponseEntity.badRequest().body("Incorrect data");
         }
+    }
+
+    @GetMapping("/roles")
+    List<String>  getRoles() {
+        return roleService.getAllRoles().stream().map(role -> role.getName().name()).collect(Collectors.toList());
     }
 }

@@ -14,78 +14,46 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import ru.kata.spring.boot_security.demo.service.security.UserService;
+import ru.kata.spring.boot_security.demo.service.security.UserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    //****************************************************************
-    // Я добавил 2 источника - dao provider и in-memory
-    // В in-memory хранится 1 пользователь
-    // login: admin
-    // password: admin
-    // чтобы можно было войти
-    // и начать тестировать программу
-    //****************************************************************
-    private final UserService userService;
+    private final UserDetailsServiceImpl userDetailsServiceImpl;
 
     @Autowired
-    public WebSecurityConfig(
-            UserService userService
-    ) {
-        this.userService = userService;
+    public WebSecurityConfig(UserDetailsServiceImpl userDetailsServiceImpl) {
+        this.userDetailsServiceImpl = userDetailsServiceImpl;
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(daoAuthenticationProvider())
-                .userDetailsService(userDetailsService());
+        auth.userDetailsService(userDetailsServiceImpl);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/**/admin/**")
-                .hasRole("ADMIN")
-                .anyRequest()
-                .authenticated()
+                .antMatchers("**/admin/**").hasAuthority("ROLE_ADMIN")
+                .anyRequest().authenticated()
                 .and()
-                .formLogin()
-                .permitAll()
+                .formLogin().permitAll()
                 .and()
-                .logout()
-                .permitAll()
+                .logout().permitAll()
                 .and()
-                .cors()
-                .disable()
-                .csrf()
-                .disable();
+                .cors().disable()
+                .csrf().disable();
+
+//        http
+//                .authorizeRequests()
+//                .anyRequest()
+//                .permitAll();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    protected PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(6);
-    }
-
-    @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider() {
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-
-        daoAuthenticationProvider.setUserDetailsService(userService);
-        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-
-        return daoAuthenticationProvider;
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails user = User.withUsername("admin")
-                .password("$2a$06$l9kX9GZK80wKN3qHPijBv.L7tsGBM0ygIE/pWdOpz7Lw3EPhlbMry")
-                .roles("ADMIN")
-                .build();
-
-        return new InMemoryUserDetailsManager(user);
     }
 }
 

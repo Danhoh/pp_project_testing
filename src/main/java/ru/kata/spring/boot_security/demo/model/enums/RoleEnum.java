@@ -1,14 +1,14 @@
-package ru.kata.spring.boot_security.demo.model.entity;
+package ru.kata.spring.boot_security.demo.model.enums;
 
 import org.springframework.security.core.GrantedAuthority;
 
-public enum Role implements GrantedAuthority {
+public enum RoleEnum {
     ROLE_ADMIN("ADMIN"),
     ROLE_USER("USER");
 
     private final String view;
 
-    Role(String view) {
+    RoleEnum(String view) {
         this.view = view;
     }
 
@@ -18,11 +18,6 @@ public enum Role implements GrantedAuthority {
 
     @Override
     public String toString() {
-        return this.name();
-    }
-
-    @Override
-    public String getAuthority() {
         return this.name();
     }
 }
