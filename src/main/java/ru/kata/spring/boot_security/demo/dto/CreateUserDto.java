@@ -15,9 +15,8 @@ import java.util.List;
 
 public class CreateUserDto implements UserDto {
     @NotEmpty(groups = {CreateValidation.class}, message = "Email should be not empty")
-    @Email(groups = {CreateValidation.class, UpdateValidation.class})
-    @Column(unique = true, nullable = false)
-    @Size(min = 3, max = 20, message = "Email should be in range 3 and 20 characters")
+    @Email(groups = {CreateValidation.class})
+    @Size(groups = {CreateValidation.class}, min = 3, max = 20, message = "Email should be in range 3 and 20 characters")
     private String username;
 
     @NotEmpty(groups = {CreateValidation.class}, message = "Password should be not empty")
@@ -25,8 +24,8 @@ public class CreateUserDto implements UserDto {
     private String password;
 
     @NotEmpty(groups = {CreateValidation.class}, message = "First name should be not empty")
-    @Pattern(groups = {CreateValidation.class, UpdateValidation.class}, regexp = "[A-Za-z]+", message = "Should be valid first name")
-    @Size(groups = {CreateValidation.class, UpdateValidation.class}, min = 2, max = 20, message = "Firstname should be in range 2 and 20 characters")
+    @Pattern(groups = {CreateValidation.class}, regexp = "[A-Za-z]+", message = "Should be valid first name")
+    @Size(groups = {CreateValidation.class}, min = 2, max = 20, message = "Firstname should be in range 2 and 20 characters")
     private String firstName;
 
     @NotEmpty(groups = {CreateValidation.class}, message = "Last name should be not empty")
@@ -34,7 +33,7 @@ public class CreateUserDto implements UserDto {
     @Size(groups = {CreateValidation.class}, min = 2, max = 20, message = "Last name should be in range 2 and 20 characters")
     private String lastName;
 
-    @NotNull(groups = {CreateValidation.class}, message = "Age should not be empty")
+    @NotEmpty(groups = {CreateValidation.class}, message = "Age should not be empty")
     @Min(value = 10, message = "Should be greater then 9")
     @Max(value = 99, message = "Should be less then 100")
     private Integer age;

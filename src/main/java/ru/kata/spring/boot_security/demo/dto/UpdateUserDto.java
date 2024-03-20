@@ -1,5 +1,7 @@
 package ru.kata.spring.boot_security.demo.dto;
 
+import ru.kata.spring.boot_security.demo.dto.validation.UpdateValidation;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -8,18 +10,18 @@ import java.util.List;
 public class UpdateUserDto implements UserDto {
     private Long id;
 
-    @Email
-    @Size(min = 3, max = 20, message = "Email should be in range 3 and 20 characters")
+    @Email(groups = {UpdateValidation.class})
+    @Size(groups = {UpdateValidation.class}, min = 3, max = 20, message = "Email should be in range 3 and 20 characters")
     private String username;
 
     private String password;
 
-    @Pattern(regexp = "[A-Za-z]+", message = "Should be valid first name")
-    @Size(min = 2, max = 20, message = "Firstname should be in range 2 and 20 characters")
+    @Pattern(groups = {UpdateValidation.class}, regexp = "[A-Za-z]+", message = "Should be valid first name")
+    @Size(groups = {UpdateValidation.class}, min = 2, max = 20, message = "Firstname should be in range 2 and 20 characters")
     private String firstName;
 
-    @Pattern(regexp = "[A-Za-z]+", message = "Should be valid last name")
-    @Size(min = 2, max = 20, message = "Last name should be in range 2 and 20 characters")
+    @Pattern(groups = {UpdateValidation.class}, regexp = "[A-Za-z]+", message = "Should be valid last name")
+    @Size(groups = {UpdateValidation.class}, min = 2, max = 20, message = "Last name should be in range 2 and 20 characters")
     private String lastName;
 
     private Integer age;
