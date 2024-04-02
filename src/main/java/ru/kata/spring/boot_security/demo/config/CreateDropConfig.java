@@ -13,8 +13,8 @@ import java.util.List;
 
 @Configuration
 public class CreateDropConfig {
-    UserService userService;
-    RoleService roleService;
+    private final UserService userService;
+    private final RoleService roleService;
 
     @Autowired
     public CreateDropConfig(UserService userService, RoleService roleService) {

@@ -33,7 +33,6 @@ public class CreateUserDto implements UserDto {
     @Size(groups = {CreateValidation.class}, min = 2, max = 20, message = "Last name should be in range 2 and 20 characters")
     private String lastName;
 
-    @NotEmpty(groups = {CreateValidation.class}, message = "Age should not be empty")
     @Min(value = 10, message = "Should be greater then 9")
     @Max(value = 99, message = "Should be less then 100")
     private Integer age;
